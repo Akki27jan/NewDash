@@ -11,9 +11,9 @@ export default function DashboardHeader() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch("http://localhost:8000/api/auth/logout", { 
-      method: "POST", 
-      credentials: "include" 
+    await fetch("http://localhost:8000/api/auth/logout", {
+      method: "POST",
+      credentials: "include"
     });
     await checkAuth();
     router.push("/login");
@@ -26,7 +26,7 @@ export default function DashboardHeader() {
           NewDash_
         </Link>
       </div>
-      
+
       <div className="flex gap-4 items-center flex-nowrap justify-center px-4">
         <Button label="SUBJECTS" color="blue" />
         <Button label="GPA_CALC" color="blue" />
@@ -34,6 +34,7 @@ export default function DashboardHeader() {
         <Button label="NOTES" color="blue" />
         <Button label="CALENDAR" color="blue" />
         <Button label="ATTENDANCE" color="blue" />
+        <Button label="SETTINGS" color="blue" />
       </div>
 
       <div className="flex-1 flex justify-end min-w-max">
