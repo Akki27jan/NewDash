@@ -1,0 +1,21 @@
+backend_api/
+├── main.py
+├── requirements.txt
+├── .env
+├── app/
+│   ├── __init__.py
+│   ├── core/
+│   │   ├── config.py       (Configuration & Environment variables)
+│   │   ├── security.py     (Password hashing utility)
+│   ├── db/
+│   │   ├── database.py     (SQLAlchemy Engine & Session local setup)
+│   ├── models/
+│   │   ├── user.py         (SQLAlchemy User model definition)
+│   ├── schemas/
+│   │   ├── user.py         (Pydantic validation schemas)
+│   ├── api/
+│   │   ├── deps.py         (Dependency injection, e.g. get_db)
+│   │   ├── routes/
+│   │   │   ├── auth.py     (Signup endpoint)
+
+frontend_ui/
