@@ -6,6 +6,9 @@ export default function Footer() {
       <div className="text-blue-600 italic">
         {'>'} "Built for students, by students. 100% Open Source."
       </div>
+      <div className="text-blue-600 italic">
+        {'>'} <a href="https://github.com/Akki27jan/NewDash.git">"https://github.com/Akki27jan/NewDash.git"</a>
+      </div>
       <div className="mt-4 text-xs text-blue-800">
         EOF
       </div>
