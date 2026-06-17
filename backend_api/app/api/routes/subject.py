@@ -36,7 +36,8 @@ async def create_subject(
         id=new_id,
         student_id=current_user.id,
         subject_name=subject_in.subject_name,
-        credits=subject_in.credits
+        credits=subject_in.credits,
+        description=subject_in.description
     )
     
     db.add(new_subject)
@@ -93,6 +94,8 @@ async def update_subject(
         subject.subject_name = subject_in.subject_name
     if subject_in.credits is not None:
         subject.credits = subject_in.credits
+    if subject_in.description is not None:
+        subject.description = subject_in.description
         
     await db.commit()
     await db.refresh(subject)

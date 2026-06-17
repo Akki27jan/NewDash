@@ -8,3 +8,4 @@ class Subject(Base):
     student_id = Column(String, ForeignKey("users.id"), nullable=False, index=True)
     subject_name = Column(String, nullable=False)
     credits = Column(Float, nullable=False)
+    description = Column(String, nullable=True)

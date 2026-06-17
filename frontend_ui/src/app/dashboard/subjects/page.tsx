@@ -7,6 +7,7 @@ interface Subject {
   id: string;
   subject_name: string;
   credits: number;
+  description?: string;
   student_id: string;
 }
 
@@ -20,6 +21,9 @@ export default function SubjectsPage() {
   const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
   const [editSubjectName, setEditSubjectName] = useState('');
   const [editCredits, setEditCredits] = useState('');
+
+  const [descModalSubject, setDescModalSubject] = useState<Subject | null>(null);
+  const [modalDescription, setModalDescription] = useState('');
 
   const fetchSubjects = async () => {
     try {
@@ -128,6 +132,43 @@ export default function SubjectsPage() {
     }
   };
 
+  const handleOpenDescModal = (subject: Subject) => {
+    setDescModalSubject(subject);
+    setModalDescription(subject.description || '');
+  };
+
+  const handleCloseDescModal = () => {
+    setDescModalSubject(null);
+    setModalDescription('');
+  };
+
+  const handleSaveDescription = async () => {
+    if (!descModalSubject) return;
+    setError('');
+    setSuccessMsg('');
+    try {
+      const res = await fetch(`http://localhost:8000/api/subjects/${descModalSubject.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          description: modalDescription,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.detail || 'Failed to update description');
+      }
+      
+      setSuccessMsg(`[SUCCESS] Description updated successfully`);
+      handleCloseDescModal();
+      fetchSubjects();
+    } catch (err: any) {
+      setError(`[ERROR] ${err.message}`);
+    }
+  };
+
   return (
     <main className="flex-grow flex flex-col gap-8 mt-8 max-w-4xl mx-auto w-full px-4 mb-8">
 
@@ -152,7 +193,7 @@ export default function SubjectsPage() {
 
         <form onSubmit={handleAddSubject} className="flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <label className="text-blue-400 w-32">&gt; Subject Name:</label>
+            <label className="text-blue-400 w-32">&gt; Sub_Name:</label>
             <input
               type="text"
               value={subjectName}
@@ -239,6 +280,13 @@ export default function SubjectsPage() {
                             [EDIT]
                           </button>
                           <button
+                            onClick={() => handleOpenDescModal(subject)}
+                            className="text-yellow-500 hover:text-yellow-400 px-2 py-1 mr-2 transition-colors focus:outline-none"
+                            title="Edit Description"
+                          >
+                            [DESC]
+                          </button>
+                          <button
                             onClick={() => handleDeleteSubject(subject.id)}
                             className="text-red-500 hover:text-red-400 hover:bg-red-950 px-2 py-1 transition-colors focus:outline-none focus:ring-1 focus:ring-red-500"
                             title="Delete Subject"
@@ -260,6 +308,54 @@ export default function SubjectsPage() {
           </div>
         )}
       </div>
+
+      {/* Description Modal (Nano-style) */}
+      {descModalSubject && (
+        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+          <div className="w-full max-w-3xl border border-blue-900 bg-black flex flex-col shadow-[0_0_20px_rgba(0,0,255,0.15)] font-mono">
+            {/* Nano Header */}
+            <div className="bg-blue-900 text-black px-2 py-1 flex justify-between items-center text-sm font-bold">
+              <span>UW PICO 5.09</span>
+              <span>File: {descModalSubject.subject_name}.txt</span>
+              <span>{modalDescription ? 'Modified' : ''}</span>
+            </div>
+            
+            <div className="p-2 border-b border-blue-900/50 text-blue-400 text-sm">
+              &gt; Credits: {descModalSubject.credits}
+            </div>
+
+            {/* Text Area */}
+            <div className="flex-grow p-2">
+              <textarea
+                value={modalDescription}
+                onChange={(e) => setModalDescription(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') {
+                    e.preventDefault();
+                    handleSaveDescription();
+                  }
+                }}
+                className="w-full h-64 bg-transparent text-blue-300 focus:outline-none resize-none leading-relaxed"
+                placeholder="[ Enter description here... ]"
+                autoFocus
+              />
+            </div>
+
+            {/* Nano Footer/Shortcuts */}
+            <div className="bg-blue-900/20 text-blue-400 p-2 text-xs flex flex-wrap gap-x-6 gap-y-2 border-t border-blue-900">
+              <div className="flex items-center cursor-pointer hover:text-white" onClick={handleSaveDescription}>
+                <span className="bg-blue-900 text-black px-1 mr-1 font-bold">^O</span> Write Out [SAVE]
+              </div>
+              <div className="flex items-center cursor-pointer hover:text-white" onClick={handleCloseDescModal}>
+                <span className="bg-blue-900 text-black px-1 mr-1 font-bold">^X</span> Exit [CANCEL]
+              </div>
+              <div className="flex items-center cursor-pointer hover:text-white" onClick={handleSaveDescription}>
+                <span className="bg-blue-900 text-black px-1 mr-1 font-bold">ESC</span> Save & Exit
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </main>
   );
