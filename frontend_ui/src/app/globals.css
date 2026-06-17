@@ -9,3 +9,13 @@ body {
   background-color: var(--color-background);
   color: var(--color-foreground);
 }
+
+/* Hide number input arrows for terminal aesthetic */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}

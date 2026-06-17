@@ -22,9 +22,32 @@ async def signup(user_in: UserCreate, db: AsyncSession = Depends(deps.get_db)):
             detail="User with this email already exists."
         )
 
+    # Generate alphanumeric user ID
+    all_users_result = await db.execute(select(User.id))
+    all_ids = all_users_result.scalars().all()
+    max_num = 0
+    for user_id in all_ids:
+        if user_id and len(user_id) > 3:
+            try:
+                num_part = int(user_id[3:])
+                if num_part > max_num:
+                    max_num = num_part
+            except ValueError:
+                pass
+    next_num = max_num + 1
+
+    prefix = user_in.first_name[:2].upper()
+    if len(prefix) == 1:
+        prefix += 'X'
+    elif len(prefix) == 0:
+        prefix = 'XX'
+    
+    new_id = f"{prefix}S{next_num:02d}"
+
     # Hash the password and create the user
     hashed_password = get_password_hash(user_in.password)
     new_user = User(
+        id=new_id,
         first_name=user_in.first_name,
         last_name=user_in.last_name,
         email=user_in.email,

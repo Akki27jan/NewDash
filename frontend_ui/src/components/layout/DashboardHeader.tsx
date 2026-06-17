@@ -28,7 +28,7 @@ export default function DashboardHeader() {
       </div>
 
       <div className="flex gap-4 items-center flex-nowrap justify-center px-4">
-        <Button label="SUBJECTS" color="blue" />
+        <Button label="SUBJECTS" color="blue" onClick={() => router.push('/dashboard/subjects')} />
         <Button label="GPA_CALC" color="blue" />
         <Button label="TODO_LIST" color="blue" />
         <Button label="NOTES" color="blue" />

@@ -51,7 +51,7 @@ async def get_current_user(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-    result = await db.execute(select(User).where(User.id == int(token_data.sub)))
+    result = await db.execute(select(User).where(User.id == token_data.sub))
     user = result.scalars().first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

@@ -1,7 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.db.database import engine, Base
-from app.api.routes import auth
+from app.api.routes import auth, subject
+from app.models.subject import Subject
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -25,6 +26,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(subject.router, prefix="/api/subjects", tags=["subjects"])
 
 @app.get("/")
 async def root():
