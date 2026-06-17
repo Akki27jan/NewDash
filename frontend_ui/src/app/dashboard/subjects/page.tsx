@@ -59,7 +59,7 @@ export default function SubjectsPage() {
         credentials: 'include',
         body: JSON.stringify({
           subject_name: subjectName,
-          credits: parseInt(credits, 10),
+          credits: parseFloat(credits),
         }),
       });
 
@@ -87,7 +87,7 @@ export default function SubjectsPage() {
         const errorData = await res.json().catch(() => ({}));
         throw new Error(errorData.detail || 'Failed to delete subject');
       }
-      
+
       setSuccessMsg(`[SUCCESS] Subject deleted successfully`);
       fetchSubjects();
     } catch (err: any) {
@@ -111,7 +111,7 @@ export default function SubjectsPage() {
         credentials: 'include',
         body: JSON.stringify({
           subject_name: editSubjectName,
-          credits: parseInt(editCredits, 10),
+          credits: parseFloat(editCredits),
         }),
       });
 
@@ -119,7 +119,7 @@ export default function SubjectsPage() {
         const errorData = await res.json().catch(() => ({}));
         throw new Error(errorData.detail || 'Failed to update subject');
       }
-      
+
       setSuccessMsg(`[SUCCESS] Subject updated successfully`);
       setEditingSubjectId(null);
       fetchSubjects();
@@ -165,6 +165,7 @@ export default function SubjectsPage() {
             <label className="text-blue-400 w-32">&gt; Credits:</label>
             <input
               type="number"
+              step="any"
               value={credits}
               onChange={(e) => setCredits(e.target.value)}
               className="bg-transparent border border-blue-900 text-blue-500 p-1 flex-1 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors placeholder-blue-900"
@@ -205,15 +206,16 @@ export default function SubjectsPage() {
                     {editingSubjectId === subject.id ? (
                       <>
                         <td className="py-2 pr-4">
-                          <input 
+                          <input
                             value={editSubjectName}
                             onChange={(e) => setEditSubjectName(e.target.value)}
                             className="bg-black border border-blue-900 text-blue-500 p-1 w-full focus:outline-none focus:border-red-500"
                           />
                         </td>
                         <td className="py-2 pr-4 text-right">
-                          <input 
+                          <input
                             type="number"
+                            step="any"
                             value={editCredits}
                             onChange={(e) => setEditCredits(e.target.value)}
                             className="bg-black border border-blue-900 text-blue-500 p-1 w-16 text-right focus:outline-none focus:border-red-500"
@@ -229,15 +231,15 @@ export default function SubjectsPage() {
                         <td className="py-2 pr-4">{subject.subject_name}</td>
                         <td className="py-2 pr-4 text-right">{subject.credits}</td>
                         <td className="py-2 pr-4 text-right">
-                          <button 
-                            onClick={() => handleEditClick(subject)} 
+                          <button
+                            onClick={() => handleEditClick(subject)}
                             className="text-blue-500 hover:text-blue-400 px-2 py-1 mr-2 transition-colors focus:outline-none"
                             title="Edit Subject"
                           >
                             [EDIT]
                           </button>
-                          <button 
-                            onClick={() => handleDeleteSubject(subject.id)} 
+                          <button
+                            onClick={() => handleDeleteSubject(subject.id)}
                             className="text-red-500 hover:text-red-400 hover:bg-red-950 px-2 py-1 transition-colors focus:outline-none focus:ring-1 focus:ring-red-500"
                             title="Delete Subject"
                           >
@@ -252,6 +254,7 @@ export default function SubjectsPage() {
             </table>
             <div className="text-blue-800 text-sm mt-4">
               Total records: {subjects.length} <br />
+              Total credits: {subjects.reduce((acc, subject) => acc + subject.credits, 0)}<br />
               EOF
             </div>
           </div>

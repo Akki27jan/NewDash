@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from app.db.database import Base
 
 class Subject(Base):
@@ -7,4 +7,4 @@ class Subject(Base):
     id = Column(String, primary_key=True, index=True)
     student_id = Column(String, ForeignKey("users.id"), nullable=False, index=True)
     subject_name = Column(String, nullable=False)
-    credits = Column(Integer, nullable=False)
+    credits = Column(Float, nullable=False)

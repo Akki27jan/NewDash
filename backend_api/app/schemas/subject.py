@@ -3,14 +3,14 @@ from pydantic import BaseModel
 
 class SubjectBase(BaseModel):
     subject_name: str
-    credits: int
+    credits: float
 
 class SubjectCreate(SubjectBase):
     pass
 
 class SubjectUpdate(BaseModel):
     subject_name: Optional[str] = None
-    credits: Optional[int] = None
+    credits: Optional[float] = None
 
 class SubjectResponse(SubjectBase):
     id: str
