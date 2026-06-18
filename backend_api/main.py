@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.db.database import engine, Base
-from app.api.routes import users, auth, subject, gpa, todo
+from app.api.routes import auth, subject, todo
 from app.core.config import settings
 from app.models.subject import Subject
 from app.models.todo import Todo
