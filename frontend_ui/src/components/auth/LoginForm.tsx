@@ -3,7 +3,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import Button from '../ui/Button';
+import { API_URL } from '@/lib/api';
 
 const InputField = ({ label, name, type = 'text', validation = {}, register, errors }: any) => (
   <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
@@ -34,13 +36,14 @@ export default function LoginForm() {
   const [serverError, setServerError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const router = useRouter();
+  const { checkAuth } = useAuth();
 
   const onSubmit = async (data: any) => {
     setServerError('');
     setSuccessMsg('');
     
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,6 +62,7 @@ export default function LoginForm() {
       }
 
       setSuccessMsg('[SYSTEM] Authentication successful. Initializing dashboard...');
+      await checkAuth();
       setTimeout(() => {
         router.push('/dashboard');
       }, 1500);

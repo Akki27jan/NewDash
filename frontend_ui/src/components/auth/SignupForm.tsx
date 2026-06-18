@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Button from '../ui/Button';
+import { API_URL } from '@/lib/api';
 
 const InputField = ({ label, name, type = 'text', validation = {}, register, errors }: any) => (
   <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
@@ -42,7 +43,7 @@ export default function SignupForm() {
     setSuccessMsg('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/auth/signup', {
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

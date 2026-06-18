@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { API_URL } from "@/lib/api";
 
 interface User {
   id: number;
@@ -25,7 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const checkAuth = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/api/auth/me", {
+      const response = await fetch(`${API_URL}/api/auth/me`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

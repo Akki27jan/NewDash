@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
+import { useAuth } from '@/context/AuthContext';
+import { API_URL } from '@/lib/api';
 
 interface Subject {
   id: string;
@@ -12,6 +14,7 @@ interface Subject {
 }
 
 export default function SubjectsPage() {
+  const { user } = useAuth();
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [subjectName, setSubjectName] = useState('');
   const [credits, setCredits] = useState('');
@@ -27,7 +30,7 @@ export default function SubjectsPage() {
 
   const fetchSubjects = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/subjects/', {
+      const res = await fetch(`${API_URL}/api/subjects/`, {
         credentials: 'include',
       });
       if (!res.ok) throw new Error('Failed to fetch subjects');
@@ -55,7 +58,7 @@ export default function SubjectsPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:8000/api/subjects/', {
+      const res = await fetch(`${API_URL}/api/subjects/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +85,7 @@ export default function SubjectsPage() {
     setError('');
     setSuccessMsg('');
     try {
-      const res = await fetch(`http://localhost:8000/api/subjects/${subjectId}`, {
+      const res = await fetch(`${API_URL}/api/subjects/${subjectId}`, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -109,7 +112,7 @@ export default function SubjectsPage() {
     setError('');
     setSuccessMsg('');
     try {
-      const res = await fetch(`http://localhost:8000/api/subjects/${editingSubjectId}`, {
+      const res = await fetch(`${API_URL}/api/subjects/${editingSubjectId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -147,7 +150,7 @@ export default function SubjectsPage() {
     setError('');
     setSuccessMsg('');
     try {
-      const res = await fetch(`http://localhost:8000/api/subjects/${descModalSubject.id}`, {
+      const res = await fetch(`${API_URL}/api/subjects/${descModalSubject.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -175,7 +178,7 @@ export default function SubjectsPage() {
       {/* Page Title */}
       <div className="border border-blue-900 p-6 bg-black">
         <h1 className="text-blue-500 font-bold text-2xl mb-4 border-b border-blue-900 pb-2">
-          <span className="text-red-500">root@newdash</span>:~/subjects# _
+          <span className="text-red-500">{user ? `${user.first_name}_${user.last_name}@newdash` : 'root@newdash'}</span>:~/subjects# _
         </h1>
         <p className="text-blue-400 mb-2">
           Manage your enrolled subjects here. Use the interface below to add new entries.
@@ -185,7 +188,7 @@ export default function SubjectsPage() {
       {/* Add Subject Form */}
       <div className="border border-blue-900 p-6 bg-black">
         <h2 className="text-blue-500 font-bold mb-4 border-b border-blue-900 pb-2">
-          <span className="text-red-500">guest@newdash</span>:~/subjects/add# _
+          <span className="text-red-500">{user ? `${user.first_name}_${user.last_name}@newdash` : 'guest@newdash'}</span>:~/subjects/add# _
         </h2>
 
         {error && <div className="text-red-500 mb-4">{error}</div>}

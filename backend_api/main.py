@@ -1,8 +1,10 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.db.database import engine, Base
-from app.api.routes import auth, subject
+from app.api.routes import users, auth, subject, gpa, todo
+from app.core.config import settings
 from app.models.subject import Subject
+from app.models.todo import Todo
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -19,7 +21,11 @@ app = FastAPI(title="StudentDash Backend API", lifespan=lifespan)
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"], 
+    allow_origins=[
+        "http://localhost:3000", 
+        "http://127.0.0.1:3000",
+        settings.FRONTEND_URL
+    ], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,6 +33,7 @@ app.add_middleware(
 
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(subject.router, prefix="/api/subjects", tags=["subjects"])
+app.include_router(todo.router, prefix="/api/todos", tags=["todos"])
 
 @app.get("/")
 async def root():

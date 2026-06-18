@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
+import { useAuth } from '@/context/AuthContext';
+import { API_URL } from '@/lib/api';
 
 // Interfaces
 interface Subject {
@@ -19,6 +21,7 @@ interface Assessment {
 }
 
 export default function GPACalcPage() {
+  const { user } = useAuth();
   // Mark Calculator State
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [assName, setAssName] = useState('');
@@ -56,7 +59,7 @@ export default function GPACalcPage() {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/subjects/', {
+        const res = await fetch(`${API_URL}/api/subjects/`, {
           credentials: 'include',
         });
         if (!res.ok) throw new Error('Failed to fetch subjects');
@@ -182,7 +185,7 @@ export default function GPACalcPage() {
       {/* Page Title */}
       <div className="border border-blue-900 p-6 bg-black">
         <h1 className="text-blue-500 font-bold text-2xl mb-4 border-b border-blue-900 pb-2">
-          <span className="text-red-500">root@newdash</span>:~/gpa_calc# _
+          <span className="text-red-500">{user ? `${user.first_name}_${user.last_name}@newdash` : 'root@newdash'}</span>:~/gpa_calc# _
         </h1>
         <p className="text-blue-400 mb-2">
           Calculate individual assessment scores and predict your overall GPA.

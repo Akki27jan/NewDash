@@ -5,13 +5,14 @@ import Link from 'next/link';
 import Button from '../ui/Button';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { API_URL } from '@/lib/api';
 
 export default function DashboardHeader() {
   const { checkAuth } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch("http://localhost:8000/api/auth/logout", {
+    await fetch(`${API_URL}/api/auth/logout`, {
       method: "POST",
       credentials: "include"
     });
@@ -30,7 +31,7 @@ export default function DashboardHeader() {
       <div className="flex gap-4 items-center flex-nowrap justify-center px-4">
         <Button label="SUBJECTS" color="blue" onClick={() => router.push('/dashboard/subjects')} />
         <Button label="GPA_CALC" color="blue" onClick={() => router.push('/dashboard/gpa')} />
-        <Button label="TODO_LIST" color="blue" />
+        <Button label="TODO_LIST" color="blue" onClick={() => router.push('/dashboard/todos')} />
         <Button label="NOTES" color="blue" />
         <Button label="CALENDAR" color="blue" />
         <Button label="ATTENDANCE" color="blue" />
