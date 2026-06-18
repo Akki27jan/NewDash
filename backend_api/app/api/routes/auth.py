@@ -82,8 +82,8 @@ async def login(login_data: Login, response: Response, db: AsyncSession = Depend
         key="access_token",
         value=f"Bearer {access_token}",
         httponly=True,
-        samesite="lax",
-        secure=False,
+        samesite="none",
+        secure=True,
         max_age=1440 * 60
     )
     return {"message": "Successfully logged in"}
@@ -94,5 +94,5 @@ async def read_users_me(current_user: User = Depends(deps.get_current_user)):
 
 @router.post("/logout")
 async def logout(response: Response):
-    response.delete_cookie(key="access_token", samesite="lax")
+    response.delete_cookie(key="access_token", samesite="none", secure=True)
     return {"message": "Successfully logged out"}
