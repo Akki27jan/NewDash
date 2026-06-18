@@ -13,8 +13,9 @@ PROJECT IN VERY INITIAL STAGES
 
 - **Ironclad Authentication:** Ditches vulnerable local storage for strict `HTTP-Only`, `SameSite=Lax` cookies, neutralizing XSS attack vectors while providing a seamless global session state.
 - **Terminal UI/UX:** A distraction-free, high-contrast interface inspired by classic CLI environments. Utilizes rigorous typography (`Geist_Mono`) and stark color systems to maintain a pure "hacker" aesthetic.
+- **Subject Curriculum Engine:** Full CRUD operations allowing students to track enrolled subjects and their credit values, rendered securely in an interactive terminal table layout.
+- **Advanced GPA Predictor:** A sophisticated dual-pane calculator featuring a persistent local-storage Mark Calculator and a real-time, cross-semester GPA projection system.
 - **Asynchronous IO Engine:** Powered by FastAPI and an async SQLAlchemy PostgreSQL connection, ensuring rapid query execution and highly scalable concurrency handling.
-- **Modular Dashboard Architecture:** A unified command center structured to integrate discrete academic tools (GPA calculation, task management, metrics tracking) into a single, cohesive pane of glass.
 
 ## 2. Architecture & Tech Stack
 
@@ -84,5 +85,5 @@ studentDash/
 ## 6. Future Work
 
 - **Schema Version Control:** Transition from `Base.metadata.create_all` to `Alembic` to ensure production-grade, state-tracked database migrations.
-- **Module Instantiation:** Wire the underlying logic for the placeholder dashboard modules (`GPA_CALC`, `TODO_LIST`, `ATTENDANCE`), connecting them to dedicated backend micro-services.
+- **Module Instantiation:** Wire the underlying logic for the remaining placeholder dashboard modules (`TODO_LIST`, `ATTENDANCE`), connecting them to dedicated backend micro-services.
 - **HTTPS & Secure Flags:** Configure a reverse proxy (e.g., Nginx) to handle SSL termination, allowing the enforcement of the `Secure` flag on JWT cookies for production deployment.

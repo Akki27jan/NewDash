@@ -42,6 +42,17 @@ The color scheme is extremely minimal, relying on a pure black background and hi
 - **Lists**: The `Features` list is formatted like an indexed command-line output (e.g., `[01] DRIVE_LINKER ..... Linking college lecture classes drive folders`).
 - **Visuals**: ASCII art is explicitly used in place of SVG/PNG logos (seen in `Hero.tsx`).
 
+### 2.4 Feature-Specific Design Implementations
+
+**Subjects & GPA_CALC Tabs**:
+- **Layout**: Both tabs encapsulate sections within rigid blue borders (`border border-blue-900`) and pure black backgrounds (`bg-black`) to mimic distinct terminal windows or panes.
+- **Headers**: Section headers are styled as command prompts (e.g., `<span className="text-red-500">root@newdash</span>:~/subjects# _` or `system:~/gpa_calc/predictor# ./run_prediction`) indicating the current active directory or script.
+- **Data Tables**: Uses a `border-collapse` layout with thin blue bottom borders (`border-b border-blue-900/30`) for rows. Hovering over a row provides a subtle blue highlight (`hover:bg-blue-900/10`).
+- **Indexing**: Row numbers or indices utilize zero-padded bracket formatting, e.g., `[01]`, `[02]`.
+- **Forms and Inputs**: Input fields use transparent backgrounds (`bg-transparent`) with monospace placeholder text styled like CLI instructions (e.g., `[ Enter Subject Name ]`). Focus states highlight the borders with red (`focus:border-red-500 focus:ring-1 focus:ring-red-500`) to indicate active data entry.
+- **Inline Actions**: Action buttons within tables are text-based and bracketed (e.g., `[EDIT]`, `[DEL]`, `[SAVE]`) with context-aware hover colors (red for destructive actions, green for saves, blue/yellow for editing).
+- **Summary blocks**: Highlight final outputs or important metadata in distinct bounded boxes using background shading (`bg-blue-900/10`) and green monospace text for successful calculations or values.
+
 ## 3. Future Expansion Guidelines
 
 When adding new features or components to the frontend, developers should adhere to the following rules to maintain design consistency:

@@ -1,6 +1,29 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 
 export default function DashboardPage() {
+  const [subjectCount, setSubjectCount] = useState<number | string>('...');
+
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/api/subjects/', {
+          credentials: 'include',
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setSubjectCount(data.length);
+        } else {
+          setSubjectCount('ERROR');
+        }
+      } catch (err) {
+        setSubjectCount('ERROR');
+      }
+    };
+    fetchSubjects();
+  }, []);
+
   return (
     <main className="flex-grow flex flex-col gap-12 mt-8 max-w-4xl mx-auto w-full px-4">
       <div className="border border-blue-900 p-6 bg-black">
@@ -12,7 +35,7 @@ export default function DashboardPage() {
         </p>
         <div className="text-blue-800 text-sm mb-8">
           [System status: ONLINE] <br />
-          [Active modules: 0]
+          [Active modules: {subjectCount}]
         </div>
       </div>
     </main>
