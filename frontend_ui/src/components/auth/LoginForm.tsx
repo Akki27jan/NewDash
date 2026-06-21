@@ -9,21 +9,21 @@ import { API_URL } from '@/lib/api';
 
 const InputField = ({ label, name, type = 'text', validation = {}, register, errors }: any) => (
   <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
-    <label className="text-blue-500 whitespace-nowrap min-w-[200px]">
-      <span className="text-red-500">guest@newdash</span>:<span className="text-blue-500">~</span>$ enter_{name}:
+    <label className="text-theme-primary whitespace-nowrap min-w-[200px]">
+      <span className="text-theme-accent">guest@newdash</span>:<span className="text-theme-primary">~</span>$ enter_{name}:
     </label>
     <div className="flex-grow flex flex-col">
       <div className="flex items-center">
-        <span className="text-blue-800 mr-2">[</span>
+        <span className="text-theme-muted mr-2">[</span>
         <input
           type={type}
-          className="flex-grow bg-black text-white border-b border-blue-900 focus:outline-none focus:border-blue-500 px-1 py-0.5 font-mono"
+          className="flex-grow bg-theme-bg text-white border-b border-theme-border focus:outline-none focus:border-theme-primary px-1 py-0.5 font-mono"
           {...register(name, validation)}
         />
-        <span className="text-blue-800 ml-2">]</span>
+        <span className="text-theme-muted ml-2">]</span>
       </div>
       {errors[name] && (
-        <span className="text-red-500 text-sm mt-1">
+        <span className="text-theme-accent text-sm mt-1">
           * {errors[name]?.message?.toString() || 'This field is required'}
         </span>
       )}
@@ -74,9 +74,9 @@ export default function LoginForm() {
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 w-full">
-      <div className="mb-8 border-b border-blue-900 inline-block">
-        <h2 className="text-blue-500 font-bold text-xl">
-          <span className="text-red-500">#</span> ESTABLISH_CONNECTION
+      <div className="mb-8 border-b border-theme-border inline-block">
+        <h2 className="text-theme-primary font-bold text-xl">
+          <span className="text-theme-accent">#</span> ESTABLISH_CONNECTION
         </h2>
       </div>
 
@@ -103,13 +103,13 @@ export default function LoginForm() {
         />
 
         {serverError && (
-          <div className="text-red-500 mt-4 p-2 border border-red-900 bg-red-950/20">
+          <div className="text-theme-accent mt-4 p-2 border border-theme-accent-border bg-theme-accent-bg/20">
             [ERROR] {serverError}
           </div>
         )}
 
         {successMsg && (
-          <div className="text-green-500 mt-4 p-2 border border-green-900 bg-green-950/20">
+          <div className="text-theme-success mt-4 p-2 border border-theme-success-border bg-theme-success-bg/20">
             {successMsg}
           </div>
         )}

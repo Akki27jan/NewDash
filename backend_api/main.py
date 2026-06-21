@@ -7,6 +7,7 @@ from app.models.subject import Subject
 from app.models.todo import Todo
 from app.models.subtask import SubTask
 from app.models.note import Note
+from app.models.attendance import Attendance
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -39,6 +40,8 @@ app.include_router(subject.router, prefix="/api/subjects", tags=["subjects"])
 app.include_router(todo.router, prefix="/api/todos", tags=["todos"])
 app.include_router(subtask.router, prefix="/api/subtasks", tags=["subtasks"])
 app.include_router(note.router, prefix="/api/notes", tags=["notes"])
+from app.api.routes import attendance
+app.include_router(attendance.router, prefix="/api/attendance", tags=["attendance"])
 
 @app.get("/")
 async def root():

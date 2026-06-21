@@ -11,10 +11,14 @@ class UserCreate(UserBase):
 
 class UserResponse(UserBase):
     id: str
+    attendance_threshold: float
     created_at: datetime
 
     class Config:
         from_attributes = True
+
+class UserThresholdUpdate(BaseModel):
+    attendance_threshold: float
 
 class Login(BaseModel):
     email: EmailStr

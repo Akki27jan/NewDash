@@ -12,20 +12,20 @@ export default function Features() {
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4">
-      <div className="mb-6 border-b border-blue-900 inline-block">
-        <h2 className="text-blue-500 font-bold text-xl">
-          <span className="text-red-500">#</span> AVAILABLE_MODULES
+      <div className="mb-6 border-b border-theme-border inline-block">
+        <h2 className="text-theme-primary font-bold text-xl">
+          <span className="text-theme-accent">#</span> AVAILABLE_MODULES
         </h2>
       </div>
       
       <ul className="space-y-4">
         {features.map((feature, index) => (
           <li key={index} className="flex flex-col sm:flex-row sm:items-baseline gap-2">
-            <span className="text-red-500 font-bold whitespace-nowrap">
+            <span className="text-theme-accent font-bold whitespace-nowrap">
               [{String(index + 1).padStart(2, '0')}] {feature.name}
             </span>
-            <span className="hidden sm:inline text-blue-800">.....</span>
-            <span className="text-blue-400 text-sm sm:text-base">
+            <span className="hidden sm:inline text-theme-muted">.....</span>
+            <span className="text-theme-secondary text-sm sm:text-base">
               {feature.desc}
             </span>
           </li>

@@ -47,32 +47,32 @@ export default function DashboardPage() {
 
   return (
     <main className="flex-grow flex flex-col gap-12 mt-8 max-w-4xl mx-auto w-full px-4">
-      <div className="border border-blue-900 p-6 bg-black">
-        <h1 className="text-blue-500 font-bold text-2xl mb-4 border-b border-blue-900 pb-2">
-          <span className="text-red-500">{user ? `${user.first_name}_${user.last_name}@newdash` : 'root@newdash'}</span>:~# _
+      <div className="border border-theme-border p-6 bg-theme-bg">
+        <h1 className="text-theme-primary font-bold text-2xl mb-4 border-b border-theme-border pb-2">
+          <span className="text-theme-accent">{user ? `${user.first_name}_${user.last_name}@newdash` : 'root@newdash'}</span>:~# _
         </h1>
-        <p className="text-blue-400 mb-6">
+        <p className="text-theme-secondary mb-6">
           Welcome to the NewDash module control center. You have successfully authenticated.
         </p>
-        <div className="text-blue-800 text-sm mb-4">
+        <div className="text-theme-muted text-sm mb-4">
           [System status: ONLINE] <br />
           [Number of Subjects: {subjectCount}]
         </div>
         
-        <div className="border-t border-blue-900/50 pt-4 mt-4">
-          <h2 className="text-blue-500 font-bold mb-2">Pending Active Tasks:</h2>
+        <div className="border-t border-theme-border/50 pt-4 mt-4">
+          <h2 className="text-theme-primary font-bold mb-2">Pending Active Tasks:</h2>
           {pendingTasks.length > 0 ? (
-            <ul className="list-none text-blue-400 text-sm space-y-1">
+            <ul className="list-none text-theme-secondary text-sm space-y-1">
               {pendingTasks.map((t, idx) => {
                 const d = new Date(t.due);
                 const dateStr = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
                 return (
-                  <li key={t.id}>[{String(idx+1).padStart(2, '0')}] {t.task_name} <span className="text-blue-600">- Due: {dateStr}</span></li>
+                  <li key={t.id}>[{String(idx+1).padStart(2, '0')}] {t.task_name} <span className="text-theme-muted">- Due: {dateStr}</span></li>
                 );
               })}
             </ul>
           ) : (
-            <div className="text-blue-800 text-sm">[No pending tasks]</div>
+            <div className="text-theme-muted text-sm">[No pending tasks]</div>
           )}
         </div>
       </div>

@@ -4,8 +4,8 @@ import Button from '../ui/Button';
 
 export default function Header() {
   return (
-    <header className="flex justify-between items-center p-4 border-b border-blue-900">
-      <Link href="/" className="text-blue-500 font-bold text-xl tracking-widest hover:text-red-500 transition-colors">
+    <header className="flex justify-between items-center p-4 border-b border-theme-border">
+      <Link href="/" className="text-theme-primary font-bold text-xl tracking-widest hover:text-theme-accent transition-colors">
         NewDash_
       </Link>
       

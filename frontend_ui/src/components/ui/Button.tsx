@@ -9,8 +9,8 @@ export default function Button({ label, color = 'red', className = '', ...props 
   const baseClasses = 'px-4 py-1 border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black';
   
   const colorClasses = color === 'red' 
-    ? 'border-red-500 text-red-500 hover:bg-red-950 focus:ring-red-500' 
-    : 'border-blue-500 text-blue-500 hover:bg-blue-950 focus:ring-blue-500';
+    ? 'border-theme-accent text-theme-accent hover:bg-theme-accent-bg focus:ring-theme-accent' 
+    : 'border-theme-primary text-theme-primary hover:bg-theme-border-bg focus:ring-theme-primary';
 
   return (
     <button className={`${baseClasses} ${colorClasses} ${className}`} {...props}>

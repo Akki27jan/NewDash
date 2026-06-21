@@ -357,35 +357,35 @@ export default function TodosPage() {
     <main className="flex-grow flex flex-col gap-8 mt-8 max-w-5xl mx-auto w-full px-4 mb-8">
 
       {/* Page Title */}
-      <div className="border border-blue-900 p-6 bg-black">
-        <h1 className="text-blue-500 font-bold text-2xl mb-4 border-b border-blue-900 pb-2">
-          <span className="text-red-500">{user ? `${user.first_name}_${user.last_name}@newdash` : 'root@newdash'}</span>:~/todos# _
+      <div className="border border-theme-border p-6 bg-theme-bg">
+        <h1 className="text-theme-primary font-bold text-2xl mb-4 border-b border-theme-border pb-2">
+          <span className="text-theme-accent">{user ? `${user.first_name}_${user.last_name}@newdash` : 'root@newdash'}</span>:~/todos# _
         </h1>
-        <p className="text-blue-400 mb-2">
+        <p className="text-theme-secondary mb-2">
           Manage your daily task loads. Use the form below to allocate tasks to subjects.
         </p>
       </div>
 
       {/* Add Task Form */}
-      <div className="border border-blue-900 p-6 bg-black">
-        <h2 className="text-blue-500 font-bold mb-4 border-b border-blue-900 pb-2">
-          <span className="text-red-500">{user ? `${user.first_name}_${user.last_name}@newdash` : 'guest@newdash'}</span>:~/todos/add# _
+      <div className="border border-theme-border p-6 bg-theme-bg">
+        <h2 className="text-theme-primary font-bold mb-4 border-b border-theme-border pb-2">
+          <span className="text-theme-accent">{user ? `${user.first_name}_${user.last_name}@newdash` : 'guest@newdash'}</span>:~/todos/add# _
         </h2>
 
-        {error && <div className="text-red-500 mb-4">{error}</div>}
-        {successMsg && <div className="text-green-500 mb-4">{successMsg}</div>}
+        {error && <div className="text-theme-accent mb-4">{error}</div>}
+        {successMsg && <div className="text-theme-success mb-4">{successMsg}</div>}
 
         <form onSubmit={handleAddTask} className="flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <label className="text-blue-400 w-32">&gt; Subject:</label>
+            <label className="text-theme-secondary w-32">&gt; Subject:</label>
             <select
               value={subjectId}
               onChange={(e) => setSubjectId(e.target.value)}
-              className="bg-transparent border border-blue-900 text-blue-500 p-1 flex-1 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+              className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent"
             >
-              <option value="" className="bg-black text-blue-500">-- Select Subject --</option>
+              <option value="" className="bg-theme-bg text-theme-primary">-- Select Subject --</option>
               {subjects.map(s => (
-                <option key={s.id} value={s.id} className="bg-black text-blue-500">
+                <option key={s.id} value={s.id} className="bg-theme-bg text-theme-primary">
                   {s.subject_name}
                 </option>
               ))}
@@ -393,37 +393,37 @@ export default function TodosPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <label className="text-blue-400 w-32">&gt; Task_Name:</label>
+            <label className="text-theme-secondary w-32">&gt; Task_Name:</label>
             <input
               type="text"
               value={taskName}
               onChange={(e) => setTaskName(e.target.value)}
-              className="bg-transparent border border-blue-900 text-blue-500 p-1 flex-1 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 placeholder-blue-900"
+              className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent placeholder-theme-border"
               placeholder="[ Enter Task Description ]"
             />
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <label className="text-blue-400 w-32">&gt; Due_Date:</label>
+            <label className="text-theme-secondary w-32">&gt; Due_Date:</label>
             <input
               type="datetime-local"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="bg-transparent border border-blue-900 text-blue-500 p-1 flex-1 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 color-scheme-dark"
+              className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent color-scheme-dark"
               style={{ colorScheme: 'dark' }}
             />
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <label className="text-blue-400 w-32">&gt; Priority:</label>
+            <label className="text-theme-secondary w-32">&gt; Priority:</label>
             <select
               value={priority}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPriority(e.target.value as 'Low' | 'Medium' | 'High')}
-              className="bg-transparent border border-blue-900 text-blue-500 p-1 flex-1 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+              className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent"
             >
-              <option value="Low" className="bg-black text-blue-500">Low</option>
-              <option value="Medium" className="bg-black text-blue-500">Medium</option>
-              <option value="High" className="bg-black text-blue-500">High</option>
+              <option value="Low" className="bg-theme-bg text-theme-primary">Low</option>
+              <option value="Medium" className="bg-theme-bg text-theme-primary">Medium</option>
+              <option value="High" className="bg-theme-bg text-theme-primary">High</option>
             </select>
           </div>
 
@@ -434,28 +434,28 @@ export default function TodosPage() {
       </div>
 
       {/* Task List (Grouped by Subject) */}
-      <div className="border border-blue-900 p-6 bg-black">
-        <h2 className="text-blue-500 font-bold mb-4 border-b border-blue-900 pb-2">
-          <span className="text-red-500">system</span>:~/todos/list# tree --group-by-subject
+      <div className="border border-theme-border p-6 bg-theme-bg">
+        <h2 className="text-theme-primary font-bold mb-4 border-b border-theme-border pb-2">
+          <span className="text-theme-accent">system</span>:~/todos/list# tree --group-by-subject
         </h2>
 
         {loading ? (
-          <div className="text-blue-400 animate-pulse">Scanning task queues...</div>
+          <div className="text-theme-secondary animate-pulse">Scanning task queues...</div>
         ) : todos.length === 0 ? (
-          <div className="text-blue-800">No active tasks found. Enjoy the silence.</div>
+          <div className="text-theme-muted">No active tasks found. Enjoy the silence.</div>
         ) : (
           <div className="space-y-8">
             {Object.entries(groupedTodos).map(([subjId, subjTodos]) => {
               const subjectName = subjects.find(s => s.id === subjId)?.subject_name || subjId;
               return (
                 <div key={subjId}>
-                  <h3 className="text-blue-300 font-bold mb-2 border-b border-blue-900/50 pb-1">
+                  <h3 className="text-blue-300 font-bold mb-2 border-b border-theme-border/50 pb-1">
                     |- Directory: {subjectName}
                   </h3>
                   <div className="overflow-x-auto pl-4">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="text-blue-800 border-b border-blue-900/30 text-sm">
+                        <tr className="text-theme-muted border-b border-theme-border/30 text-sm">
                           <th className="py-2 pr-4 font-normal">S.NO</th>
                           <th className="py-2 pr-4 font-normal">TASK</th>
                           <th className="py-2 pr-4 font-normal">DUE</th>
@@ -464,13 +464,13 @@ export default function TodosPage() {
                           <th className="py-2 pr-4 font-normal text-right">ACTION</th>
                         </tr>
                       </thead>
-                      <tbody className="text-blue-500">
+                      <tbody className="text-theme-primary">
                         {subjTodos.map((todo, index) => {
                           const isExpired = !todo.status && new Date(todo.due) < currentTime;
                           return (
                           <React.Fragment key={todo.id}>
-                            <tr className={`border-b border-blue-900/20 hover:bg-blue-900/10 transition-colors ${todo.status ? 'opacity-50' : ''}`}>
-                              <td className="py-2 pr-4 text-xs text-blue-600">[{String(index + 1).padStart(2, '0')}]</td>
+                            <tr className={`border-b border-theme-border/20 hover:bg-theme-border/10 transition-colors ${todo.status ? 'opacity-50' : ''}`}>
+                              <td className="py-2 pr-4 text-xs text-theme-muted">[{String(index + 1).padStart(2, '0')}]</td>
 
                               {editingTodoId === todo.id ? (
                                 <>
@@ -478,7 +478,7 @@ export default function TodosPage() {
                                     <input
                                       value={editTaskName}
                                       onChange={(e) => setEditTaskName(e.target.value)}
-                                      className="bg-black border border-blue-900 text-blue-500 p-1 w-full focus:outline-none focus:border-red-500 text-sm"
+                                      className="bg-theme-bg border border-theme-border text-theme-primary p-1 w-full focus:outline-none focus:border-theme-accent text-sm"
                                     />
                                   </td>
                                   <td className="py-2 pr-4">
@@ -486,7 +486,7 @@ export default function TodosPage() {
                                       type="datetime-local"
                                       value={editDue}
                                       onChange={(e) => setEditDue(e.target.value)}
-                                      className="bg-black border border-blue-900 text-blue-500 p-1 w-full focus:outline-none focus:border-red-500 text-sm"
+                                      className="bg-theme-bg border border-theme-border text-theme-primary p-1 w-full focus:outline-none focus:border-theme-accent text-sm"
                                       style={{ colorScheme: 'dark' }}
                                     />
                                   </td>
@@ -494,28 +494,28 @@ export default function TodosPage() {
                                     <select
                                       value={editPriority}
                                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEditPriority(e.target.value as 'Low' | 'Medium' | 'High')}
-                                      className="bg-black border border-blue-900 text-blue-500 p-1 focus:outline-none focus:border-red-500 text-sm"
+                                      className="bg-theme-bg border border-theme-border text-theme-primary p-1 focus:outline-none focus:border-theme-accent text-sm"
                                     >
                                       <option value="Low">Low</option>
                                       <option value="Medium">Medium</option>
                                       <option value="High">High</option>
                                     </select>
                                   </td>
-                                  <td className="py-2 pr-4 text-blue-800 text-sm">{todo.status ? 'DONE' : 'PENDING'}</td>
+                                  <td className="py-2 pr-4 text-theme-muted text-sm">{todo.status ? 'DONE' : 'PENDING'}</td>
                                   <td className="py-2 pr-4 text-right">
-                                    <button onClick={handleSaveEdit} className="text-green-500 hover:text-green-400 px-2 py-1 focus:outline-none text-sm">[SAVE]</button>
-                                    <button onClick={() => setEditingTodoId(null)} className="text-blue-500 hover:text-blue-400 px-2 py-1 focus:outline-none text-sm">[CANCEL]</button>
+                                    <button onClick={handleSaveEdit} className="text-theme-success hover:text-theme-success-hover px-2 py-1 focus:outline-none text-sm">[SAVE]</button>
+                                    <button onClick={() => setEditingTodoId(null)} className="text-theme-primary hover:text-theme-secondary px-2 py-1 focus:outline-none text-sm">[CANCEL]</button>
                                   </td>
                                 </>
                               ) : (
                                 <>
                                   <td className="py-2 pr-4 text-sm" style={{ textDecoration: todo.status ? 'line-through' : 'none' }}>
-                                    <button onClick={() => toggleTaskExpansion(todo.id)} className="text-blue-400 hover:text-blue-300 mr-2 focus:outline-none">
+                                    <button onClick={() => toggleTaskExpansion(todo.id)} className="text-theme-secondary hover:text-blue-300 mr-2 focus:outline-none">
                                       [{expandedTaskIds.has(todo.id) ? '-' : '+'}]
                                     </button>
                                     {todo.task_name}
                                   </td>
-                                  <td className="py-2 pr-4 text-sm whitespace-nowrap text-blue-400">
+                                  <td className="py-2 pr-4 text-sm whitespace-nowrap text-theme-secondary">
                                     {(() => {
                                       const d = new Date(todo.due);
                                       const day = String(d.getDate()).padStart(2, '0');
@@ -525,26 +525,26 @@ export default function TodosPage() {
                                       const mins = String(d.getMinutes()).padStart(2, '0');
                                       return `${day}/${month}/${year} ${hours}:${mins}`;
                                     })()}
-                                    {isExpired && <span className="text-red-500 ml-2 animate-pulse">[EXPIRED]</span>}
+                                    {isExpired && <span className="text-theme-accent ml-2 animate-pulse">[EXPIRED]</span>}
                                   </td>
                                   <td className="py-2 pr-4 text-sm">
-                                    <span className={todo.priority === 'High' ? 'text-red-400' : todo.priority === 'Medium' ? 'text-yellow-400' : 'text-blue-400'}>
+                                    <span className={todo.priority === 'High' ? 'text-theme-accent-hover' : todo.priority === 'Medium' ? 'text-theme-warning' : 'text-theme-secondary'}>
                                       {todo.priority}
                                     </span>
                                   </td>
                                   <td className="py-2 pr-4 text-sm">
                                     <button
                                       onClick={() => handleToggleStatus(todo)}
-                                      className={todo.status ? "text-green-500 hover:text-red-400 focus:outline-none" : "text-yellow-500 hover:text-green-400 focus:outline-none"}
+                                      className={todo.status ? "text-theme-success hover:text-theme-accent-hover focus:outline-none" : "text-theme-warning-hover hover:text-theme-success-hover focus:outline-none"}
                                     >
                                       [{todo.status ? 'DONE' : 'UNDONE'}]
                                     </button>
                                   </td>
                                   <td className="py-2 pr-4 text-right whitespace-nowrap">
-                                    <button onClick={() => handleEditClick(todo)} className="text-blue-500 hover:text-blue-400 px-2 py-1 focus:outline-none text-sm">
+                                    <button onClick={() => handleEditClick(todo)} className="text-theme-primary hover:text-theme-secondary px-2 py-1 focus:outline-none text-sm">
                                       [EDIT]
                                     </button>
-                                    <button onClick={() => handleDeleteTask(todo.id)} className="text-red-500 hover:bg-red-950 px-2 py-1 focus:outline-none text-sm">
+                                    <button onClick={() => handleDeleteTask(todo.id)} className="text-theme-accent hover:bg-theme-accent-bg px-2 py-1 focus:outline-none text-sm">
                                       [DEL]
                                     </button>
                                   </td>
@@ -552,55 +552,55 @@ export default function TodosPage() {
                               )}
                             </tr>
                             {expandedTaskIds.has(todo.id) && (
-                              <tr className="bg-blue-900/10">
-                                <td colSpan={6} className="p-4 border-b border-blue-900/30">
-                                  <div className="text-blue-300 text-sm mb-4 border-b border-blue-900/50 pb-1 w-full">
+                              <tr className="bg-theme-border/10">
+                                <td colSpan={6} className="p-4 border-b border-theme-border/30">
+                                  <div className="text-blue-300 text-sm mb-4 border-b border-theme-border/50 pb-1 w-full">
                                     |- Sub-tasks for [{todo.task_name}]
                                   </div>
                                   <div className="mb-4 flex flex-col sm:flex-row gap-2">
-                                    <input type="text" value={newSubTaskName} onChange={e => setNewSubTaskName(e.target.value)} placeholder="[ New Sub-task Name ]" className="bg-transparent border border-blue-900 text-blue-500 p-1 focus:outline-none focus:border-red-500 text-sm flex-1" />
-                                    <input type="datetime-local" value={newSubTaskDue} max={getLocalISOString(new Date(todo.due))} onChange={e => setNewSubTaskDue(e.target.value)} className="bg-transparent border border-blue-900 text-blue-500 p-1 focus:outline-none focus:border-red-500 text-sm" style={{ colorScheme: 'dark' }} />
-                                    <select value={newSubTaskPriority} onChange={e => setNewSubTaskPriority(e.target.value as 'Low' | 'Medium' | 'High')} className="bg-transparent border border-blue-900 text-blue-500 p-1 focus:outline-none focus:border-red-500 text-sm">
-                                      <option value="Low" className="bg-black text-blue-500">Low</option>
-                                      <option value="Medium" className="bg-black text-blue-500">Medium</option>
-                                      <option value="High" className="bg-black text-blue-500">High</option>
+                                    <input type="text" value={newSubTaskName} onChange={e => setNewSubTaskName(e.target.value)} placeholder="[ New Sub-task Name ]" className="bg-transparent border border-theme-border text-theme-primary p-1 focus:outline-none focus:border-theme-accent text-sm flex-1" />
+                                    <input type="datetime-local" value={newSubTaskDue} max={getLocalISOString(new Date(todo.due))} onChange={e => setNewSubTaskDue(e.target.value)} className="bg-transparent border border-theme-border text-theme-primary p-1 focus:outline-none focus:border-theme-accent text-sm" style={{ colorScheme: 'dark' }} />
+                                    <select value={newSubTaskPriority} onChange={e => setNewSubTaskPriority(e.target.value as 'Low' | 'Medium' | 'High')} className="bg-transparent border border-theme-border text-theme-primary p-1 focus:outline-none focus:border-theme-accent text-sm">
+                                      <option value="Low" className="bg-theme-bg text-theme-primary">Low</option>
+                                      <option value="Medium" className="bg-theme-bg text-theme-primary">Medium</option>
+                                      <option value="High" className="bg-theme-bg text-theme-primary">High</option>
                                     </select>
-                                    <button onClick={() => handleAddSubTask(todo.id)} className="text-red-500 hover:bg-red-950 border border-red-500 px-3 py-1 text-sm focus:outline-none">[ADD]</button>
+                                    <button onClick={() => handleAddSubTask(todo.id)} className="text-theme-accent hover:bg-theme-accent-bg border border-theme-accent px-3 py-1 text-sm focus:outline-none">[ADD]</button>
                                   </div>
 
                                   {subTasks.filter(st => st.task_id === todo.id).length > 0 ? (
-                                    <div className="overflow-x-auto ml-4 border-l border-blue-900/50 pl-4">
+                                    <div className="overflow-x-auto ml-4 border-l border-theme-border/50 pl-4">
                                       <table className="w-full text-left border-collapse border-spacing-0">
                                         <tbody>
                                           {subTasks.filter(st => st.task_id === todo.id).map((st, i) => {
                                             const isSubTaskExpired = !st.status && new Date(st.due) < currentTime;
                                             return (
-                                            <tr key={st.id} className={`border-b border-blue-900/20 hover:bg-blue-900/20 transition-colors ${st.status ? 'opacity-50' : ''}`}>
-                                              <td className="py-1 pr-4 text-xs text-blue-600 w-8">[{String(i + 1).padStart(2, '0')}]</td>
+                                            <tr key={st.id} className={`border-b border-theme-border/20 hover:bg-theme-border/20 transition-colors ${st.status ? 'opacity-50' : ''}`}>
+                                              <td className="py-1 pr-4 text-xs text-theme-muted w-8">[{String(i + 1).padStart(2, '0')}]</td>
                                               {editingSubTaskId === st.id ? (
                                                 <>
-                                                  <td className="py-1 pr-2"><input value={editSubTaskName} onChange={e => setEditSubTaskName(e.target.value)} className="bg-black border border-blue-900 text-blue-500 p-1 w-full focus:outline-none focus:border-red-500 text-xs" /></td>
-                                                  <td className="py-1 pr-2"><input type="datetime-local" value={editSubTaskDue} max={getLocalISOString(new Date(todo.due))} onChange={e => setEditSubTaskDue(e.target.value)} className="bg-black border border-blue-900 text-blue-500 p-1 w-full focus:outline-none focus:border-red-500 text-xs" style={{ colorScheme: 'dark' }} /></td>
-                                                  <td className="py-1 pr-2"><select value={editSubTaskPriority} onChange={e => setEditSubTaskPriority(e.target.value as 'Low' | 'Medium' | 'High')} className="bg-black border border-blue-900 text-blue-500 p-1 focus:outline-none focus:border-red-500 text-xs"><option value="Low">Low</option><option value="Medium">Medium</option><option value="High">High</option></select></td>
+                                                  <td className="py-1 pr-2"><input value={editSubTaskName} onChange={e => setEditSubTaskName(e.target.value)} className="bg-theme-bg border border-theme-border text-theme-primary p-1 w-full focus:outline-none focus:border-theme-accent text-xs" /></td>
+                                                  <td className="py-1 pr-2"><input type="datetime-local" value={editSubTaskDue} max={getLocalISOString(new Date(todo.due))} onChange={e => setEditSubTaskDue(e.target.value)} className="bg-theme-bg border border-theme-border text-theme-primary p-1 w-full focus:outline-none focus:border-theme-accent text-xs" style={{ colorScheme: 'dark' }} /></td>
+                                                  <td className="py-1 pr-2"><select value={editSubTaskPriority} onChange={e => setEditSubTaskPriority(e.target.value as 'Low' | 'Medium' | 'High')} className="bg-theme-bg border border-theme-border text-theme-primary p-1 focus:outline-none focus:border-theme-accent text-xs"><option value="Low">Low</option><option value="Medium">Medium</option><option value="High">High</option></select></td>
                                                   <td className="py-1 pr-2 text-right whitespace-nowrap">
-                                                    <button onClick={handleSaveEditSubTask} className="text-green-500 hover:text-green-400 px-1 text-xs">[SAVE]</button>
-                                                    <button onClick={() => setEditingSubTaskId(null)} className="text-blue-500 hover:text-blue-400 px-1 text-xs">[CANCEL]</button>
+                                                    <button onClick={handleSaveEditSubTask} className="text-theme-success hover:text-theme-success-hover px-1 text-xs">[SAVE]</button>
+                                                    <button onClick={() => setEditingSubTaskId(null)} className="text-theme-primary hover:text-theme-secondary px-1 text-xs">[CANCEL]</button>
                                                   </td>
                                                 </>
                                               ) : (
                                                 <>
                                                   <td className="py-1 pr-4 text-sm" style={{ textDecoration: st.status ? 'line-through' : 'none' }}>{st.sub_task_name}</td>
-                                                  <td className="py-1 pr-4 text-xs text-blue-400 whitespace-nowrap">
+                                                  <td className="py-1 pr-4 text-xs text-theme-secondary whitespace-nowrap">
                                                     {new Date(st.due).toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                                                    {isSubTaskExpired && <span className="text-red-500 ml-2 animate-pulse">[EXPIRED]</span>}
+                                                    {isSubTaskExpired && <span className="text-theme-accent ml-2 animate-pulse">[EXPIRED]</span>}
                                                   </td>
-                                                  <td className="py-1 pr-4 text-xs"><span className={st.priority === 'High' ? 'text-red-400' : st.priority === 'Medium' ? 'text-yellow-400' : 'text-blue-400'}>{st.priority}</span></td>
+                                                  <td className="py-1 pr-4 text-xs"><span className={st.priority === 'High' ? 'text-theme-accent-hover' : st.priority === 'Medium' ? 'text-theme-warning' : 'text-theme-secondary'}>{st.priority}</span></td>
                                                   <td className="py-1 pr-4 text-xs">
-                                                    <button onClick={() => handleToggleSubTaskStatus(st)} className={st.status ? "text-green-500 hover:text-red-400" : "text-yellow-500 hover:text-green-400"}>[{st.status ? 'DONE' : 'UNDONE'}]</button>
+                                                    <button onClick={() => handleToggleSubTaskStatus(st)} className={st.status ? "text-theme-success hover:text-theme-accent-hover" : "text-theme-warning-hover hover:text-theme-success-hover"}>[{st.status ? 'DONE' : 'UNDONE'}]</button>
                                                   </td>
                                                   <td className="py-1 pr-4 text-right whitespace-nowrap">
-                                                    <button onClick={() => handleEditSubTaskClick(st)} className="text-blue-500 hover:text-blue-400 px-1 text-xs">[EDIT]</button>
-                                                    <button onClick={() => handleDeleteSubTask(st.id)} className="text-red-500 hover:text-red-400 px-1 text-xs">[DEL]</button>
+                                                    <button onClick={() => handleEditSubTaskClick(st)} className="text-theme-primary hover:text-theme-secondary px-1 text-xs">[EDIT]</button>
+                                                    <button onClick={() => handleDeleteSubTask(st.id)} className="text-theme-accent hover:text-theme-accent-hover px-1 text-xs">[DEL]</button>
                                                   </td>
                                                 </>
                                               )}
@@ -611,7 +611,7 @@ export default function TodosPage() {
                                       </table>
                                     </div>
                                   ) : (
-                                    <div className="text-blue-800 text-xs ml-4 border-l border-blue-900/50 pl-4 py-2">No sub-tasks. Directory empty.</div>
+                                    <div className="text-theme-muted text-xs ml-4 border-l border-theme-border/50 pl-4 py-2">No sub-tasks. Directory empty.</div>
                                   )}
                                 </td>
                               </tr>
@@ -625,7 +625,7 @@ export default function TodosPage() {
                 </div>
               );
             })}
-            <div className="text-blue-800 text-sm mt-4 pt-4 border-t border-blue-900/30">
+            <div className="text-theme-muted text-sm mt-4 pt-4 border-t border-theme-border/30">
               Total pending tasks: {todos.filter(t => !t.status).length} <br />
               Total completed tasks: {todos.filter(t => t.status).length}<br />
               EOF

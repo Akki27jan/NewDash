@@ -5,7 +5,7 @@ import LoginForm from '@/components/auth/LoginForm';
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex flex-col selection:bg-blue-900 selection:text-white">
+    <div className="min-h-screen flex flex-col selection:bg-theme-border selection:text-white">
       <Header />
       
       <main className="flex-grow flex flex-col gap-12 mt-8">

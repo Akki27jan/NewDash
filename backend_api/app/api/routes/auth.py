@@ -92,6 +92,18 @@ async def login(login_data: Login, response: Response, db: AsyncSession = Depend
 async def read_users_me(current_user: User = Depends(deps.get_current_user)):
     return current_user
 
+@router.put("/me/threshold", response_model=UserResponse)
+async def update_threshold(
+    threshold_data: dict, 
+    db: AsyncSession = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user)
+):
+    current_user.attendance_threshold = threshold_data.get("attendance_threshold", 75.0)
+    db.add(current_user)
+    await db.commit()
+    await db.refresh(current_user)
+    return current_user
+
 @router.post("/logout")
 async def logout(response: Response):
     response.delete_cookie(key="access_token", samesite="lax", secure=False)
