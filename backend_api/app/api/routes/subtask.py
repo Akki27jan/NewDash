@@ -11,7 +11,7 @@ from app.models.user import User
 
 router = APIRouter()
 
-@router.post("/", response_model=SubTaskResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=SubTaskResponse, status_code=status.HTTP_201_CREATED)
 async def create_subtask(
     subtask_in: SubTaskCreate,
     db: AsyncSession = Depends(deps.get_db),
@@ -58,7 +58,7 @@ async def create_subtask(
     
     return new_subtask
 
-@router.get("/", response_model=List[SubTaskResponse])
+@router.get("", response_model=List[SubTaskResponse])
 async def read_subtasks(
     task_id: Optional[str] = Query(None, description="Filter sub-tasks by task ID"),
     db: AsyncSession = Depends(deps.get_db),

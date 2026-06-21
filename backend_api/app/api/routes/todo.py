@@ -11,7 +11,7 @@ from app.models.user import User
 
 router = APIRouter()
 
-@router.post("/", response_model=TodoResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=TodoResponse, status_code=status.HTTP_201_CREATED)
 async def create_todo(
     todo_in: TodoCreate,
     db: AsyncSession = Depends(deps.get_db),
@@ -59,7 +59,7 @@ async def create_todo(
     
     return new_todo
 
-@router.get("/", response_model=List[TodoResponse])
+@router.get("", response_model=List[TodoResponse])
 async def read_todos(
     db: AsyncSession = Depends(deps.get_db),
     current_user: User = Depends(deps.get_current_user)

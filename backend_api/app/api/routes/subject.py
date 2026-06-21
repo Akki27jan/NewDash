@@ -10,7 +10,7 @@ from app.models.user import User
 
 router = APIRouter()
 
-@router.post("/", response_model=SubjectResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=SubjectResponse, status_code=status.HTTP_201_CREATED)
 async def create_subject(
     subject_in: SubjectCreate,
     db: AsyncSession = Depends(deps.get_db),
@@ -46,7 +46,7 @@ async def create_subject(
     
     return new_subject
 
-@router.get("/", response_model=List[SubjectResponse])
+@router.get("", response_model=List[SubjectResponse])
 async def read_subjects(
     db: AsyncSession = Depends(deps.get_db),
     current_user: User = Depends(deps.get_current_user)

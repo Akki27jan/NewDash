@@ -13,7 +13,7 @@ router = APIRouter()
 
 from datetime import timedelta
 
-@router.post("/", response_model=EventResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=EventResponse, status_code=status.HTTP_201_CREATED)
 async def create_event(
     event_in: EventCreate,
     db: AsyncSession = Depends(deps.get_db),
@@ -50,7 +50,7 @@ async def create_event(
     
     return first_event
 
-@router.get("/", response_model=List[EventResponse])
+@router.get("", response_model=List[EventResponse])
 async def read_events(
     db: AsyncSession = Depends(deps.get_db),
     current_user: User = Depends(deps.get_current_user)

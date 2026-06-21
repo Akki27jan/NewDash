@@ -10,7 +10,7 @@ from app.models.user import User
 
 router = APIRouter()
 
-@router.get("/", response_model=list[AttendanceResponse])
+@router.get("", response_model=list[AttendanceResponse])
 async def read_attendance(
     db: AsyncSession = Depends(deps.get_db),
     current_user: User = Depends(deps.get_current_user)

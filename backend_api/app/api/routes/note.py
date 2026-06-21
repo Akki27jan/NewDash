@@ -11,7 +11,7 @@ from app.models.user import User
 
 router = APIRouter()
 
-@router.post("/", response_model=NoteResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=NoteResponse, status_code=status.HTTP_201_CREATED)
 async def create_note(
     note_in: NoteCreate,
     db: AsyncSession = Depends(deps.get_db),
@@ -57,7 +57,7 @@ async def create_note(
     
     return new_note
 
-@router.get("/", response_model=List[NoteResponse])
+@router.get("", response_model=List[NoteResponse])
 async def read_notes(
     subject_id: Optional[str] = Query(None, description="Filter notes by subject ID"),
     db: AsyncSession = Depends(deps.get_db),
