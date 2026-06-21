@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, ForeignKey, Boolean, DateTime, Enum
+from sqlalchemy.orm import relationship
 from app.db.database import Base
 import enum
 
@@ -17,3 +18,5 @@ class Todo(Base):
     status = Column(Boolean, nullable=False, default=False)
     due = Column(DateTime(timezone=True), nullable=False)
     priority = Column(Enum(PriorityEnum), nullable=False)
+
+    subtasks = relationship("SubTask", back_populates="task", cascade="all, delete-orphan")

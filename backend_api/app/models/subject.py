@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy.orm import relationship
 from app.db.database import Base
 
 class Subject(Base):
@@ -9,3 +10,5 @@ class Subject(Base):
     subject_name = Column(String, nullable=False)
     credits = Column(Float, nullable=False)
     description = Column(String, nullable=True)
+
+    notes = relationship("Note", back_populates="subject", cascade="all, delete-orphan")

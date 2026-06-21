@@ -1,10 +1,12 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.db.database import engine, Base
-from app.api.routes import auth, subject, todo
+from app.api.routes import auth, subject, todo, subtask, note
 from app.core.config import settings
 from app.models.subject import Subject
 from app.models.todo import Todo
+from app.models.subtask import SubTask
+from app.models.note import Note
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,6 +37,8 @@ app.add_middleware(
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(subject.router, prefix="/api/subjects", tags=["subjects"])
 app.include_router(todo.router, prefix="/api/todos", tags=["todos"])
+app.include_router(subtask.router, prefix="/api/subtasks", tags=["subtasks"])
+app.include_router(note.router, prefix="/api/notes", tags=["notes"])
 
 @app.get("/")
 async def root():

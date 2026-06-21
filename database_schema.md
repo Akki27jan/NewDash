@@ -30,4 +30,14 @@ Here is the current database structure based on the models defined in the backen
 | `id` | String | Primary Key, Indexed |
 | `task_id` | String | Foreign Key (`to-do.id`), Not Null, Indexed |
 | `sub_task_name` | String | Not Null |
-| `status` | String | Not Null |
+| `priority` | enum ('Low','Medium','High') | Not Null |
+| `due` | DateTime | Not Null |
+| `status` | Bool | Not Null |
+
+## Notes -:
+| `id` | String | Primary Key, Indexed |
+| `subject_id` | String | Foreign Key (`subjects.id`), Not Null, Indexed |
+| `note_name` | String | Not Null |
+| `note_link` | String | Not Null |
+| `note_type` | String | Not Null |
+| `created_at` | DateTime | Default: Current Timestamp (`func.now()`) |

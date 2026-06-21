@@ -32,7 +32,7 @@ export default function DashboardHeader() {
         <Button label="SUBJECTS" color="blue" onClick={() => router.push('/dashboard/subjects')} />
         <Button label="GPA_CALC" color="blue" onClick={() => router.push('/dashboard/gpa')} />
         <Button label="TODO_LIST" color="blue" onClick={() => router.push('/dashboard/todos')} />
-        <Button label="NOTES" color="blue" />
+        <Button label="NOTES" color="blue" onClick={() => router.push('/dashboard/notes')} />
         <Button label="CALENDAR" color="blue" />
         <Button label="ATTENDANCE" color="blue" />
         <Button label="SETTINGS" color="blue" />
