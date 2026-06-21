@@ -8,6 +8,9 @@ Here is the current database structure based on the models defined in the backen
 | `last_name` | String | Not Null |
 | `email` | String | Unique, Indexed, Not Null |
 | `hashed_password` | String | Not Null |
+| `attendance_threshold` | Float | Not Null, Default: 75.0 |
+| `prev_gpa` | Float | Nullable |
+| `prev_credits` | Float | Nullable |
 | `created_at` | DateTime | Default: Current Timestamp (`func.now()`) |
 
 ## subjects -:
@@ -16,6 +19,7 @@ Here is the current database structure based on the models defined in the backen
 | `subject_name` | String | Not Null |
 | `credits` | Float | Not Null |
 | `description` | String | Nullable |
+| `expected_gpa` | Float | Nullable |
 
 ## to-do -:
 | `id` | String | Primary Key, Indexed |
@@ -41,3 +45,10 @@ Here is the current database structure based on the models defined in the backen
 | `note_link` | String | Not Null |
 | `note_type` | String | Not Null |
 | `created_at` | DateTime | Default: Current Timestamp (`func.now()`) |
+
+## attendance -:
+| `id` | String | Primary Key, Indexed |
+| `student_id` | String | Foreign Key (`users.id`) ON DELETE CASCADE, Not Null, Indexed |
+| `subject_id` | String | Foreign Key (`subjects.id`) ON DELETE CASCADE, Not Null, Indexed, Unique |
+| `attended` | Integer | Not Null, Default: 0 |
+| `total` | Integer | Not Null, Default: 0 |

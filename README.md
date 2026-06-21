@@ -1,5 +1,3 @@
-PROJECT IN VERY INITIAL STAGES
-
 # NewDash // Terminal-Grade Academic Dashboard
 
 [![Next.js](https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -12,9 +10,11 @@ PROJECT IN VERY INITIAL STAGES
 ## 1. Core Features
 
 - **Ironclad Authentication:** Ditches vulnerable local storage for strict `HTTP-Only`, `SameSite=Lax` cookies, neutralizing XSS attack vectors while providing a seamless global session state.
-- **Terminal UI/UX:** A distraction-free, high-contrast interface inspired by classic CLI environments. Utilizes rigorous typography (`Geist_Mono`) and stark color systems to maintain a pure "hacker" aesthetic.
-- **Subject Curriculum Engine:** Full CRUD operations allowing students to track enrolled subjects and their credit values, rendered securely in an interactive terminal table layout.
-- **Advanced GPA Predictor:** A sophisticated dual-pane calculator featuring a persistent local-storage Mark Calculator and a real-time, cross-semester GPA projection system.
+- **Terminal UI/UX & Theming:** A distraction-free, high-contrast interface inspired by classic CLI environments. Features a dynamic custom theme engine with presets, JSON payload import/export, and full mobile responsiveness.
+- **Subject Curriculum Engine:** Full CRUD operations allowing students to track enrolled subjects and their credit values, rendered securely in an interactive, horizontally scrollable terminal table layout.
+- **Attendance Matrix:** A unified system to track class attendance, calculate safe bunks, and set custom percentage thresholds. Persisted seamlessly to the cloud.
+- **Advanced GPA Predictor:** A sophisticated dual-pane calculator featuring a Mark Calculator and a real-time, cross-semester GPA projection system securely backed by PostgreSQL.
+- **Command-Line Tasks (Todo List):** A hierarchical task management module with due dates, priority flagging, and nested sub-tasking capabilities.
 - **Asynchronous IO Engine:** Powered by FastAPI and an async SQLAlchemy PostgreSQL connection, ensuring rapid query execution and highly scalable concurrency handling.
 
 ## 2. Architecture & Tech Stack
@@ -85,5 +85,5 @@ studentDash/
 ## 6. Future Work
 
 - **Schema Version Control:** Transition from `Base.metadata.create_all` to `Alembic` to ensure production-grade, state-tracked database migrations.
-- **Module Instantiation:** Wire the underlying logic for the remaining placeholder dashboard modules (`TODO_LIST`, `ATTENDANCE`), connecting them to dedicated backend micro-services.
+- **Calendar & Notes Integration:** Expand the module ecosystem by wiring up the `CALENDAR` placeholder component to robust backend micro-services.
 - **HTTPS & Secure Flags:** Configure a reverse proxy (e.g., Nginx) to handle SSL termination, allowing the enforcement of the `Secure` flag on JWT cookies for production deployment.
