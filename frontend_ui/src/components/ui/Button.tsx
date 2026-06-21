@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
-  color?: 'red' | 'blue';
+  color?: 'red' | 'blue' | 'yellow';
 }
 
 export default function Button({ label, color = 'red', className = '', ...props }: ButtonProps) {
@@ -10,6 +10,8 @@ export default function Button({ label, color = 'red', className = '', ...props 
   
   const colorClasses = color === 'red' 
     ? 'border-theme-accent text-theme-accent hover:bg-theme-accent-bg focus:ring-theme-accent' 
+    : color === 'yellow'
+    ? 'border-theme-warning text-theme-warning hover:bg-theme-border-bg focus:ring-theme-warning'
     : 'border-theme-primary text-theme-primary hover:bg-theme-border-bg focus:ring-theme-primary';
 
   return (
