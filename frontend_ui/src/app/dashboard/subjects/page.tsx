@@ -234,16 +234,17 @@ export default function SubjectsPage() {
           <div className="text-theme-muted">No subjects found.</div>
         ) : (
           <div className="overflow-x-auto">
+            <div className="md:hidden text-theme-muted text-xs animate-pulse mb-2">[ swipe left/right to view details ]</div>
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="text-theme-secondary border-b border-theme-border">
+                <tr className="text-theme-secondary border-b border-theme-border whitespace-nowrap">
                   <th className="py-2 pr-4 font-normal">S.NO</th>
                   <th className="py-2 pr-4 font-normal">NAME</th>
                   <th className="py-2 pr-4 font-normal text-right">CREDITS</th>
                   <th className="py-2 pr-4 font-normal text-right">ACTION</th>
                 </tr>
               </thead>
-              <tbody className="text-theme-primary">
+              <tbody className="text-theme-primary whitespace-nowrap">
                 {subjects.map((subject, index) => (
                   <tr key={subject.id} className="border-b border-theme-border/30 hover:bg-theme-border/10 transition-colors">
                     <td className="py-2 pr-4">[{String(index + 1).padStart(2, '0')}]</td>

@@ -453,9 +453,10 @@ export default function TodosPage() {
                     |- Directory: {subjectName}
                   </h3>
                   <div className="overflow-x-auto pl-4">
+                    <div className="md:hidden text-theme-muted text-xs animate-pulse mb-2">[ swipe left/right to view details ]</div>
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="text-theme-muted border-b border-theme-border/30 text-sm">
+                        <tr className="text-theme-muted border-b border-theme-border/30 text-sm whitespace-nowrap">
                           <th className="py-2 pr-4 font-normal">S.NO</th>
                           <th className="py-2 pr-4 font-normal">TASK</th>
                           <th className="py-2 pr-4 font-normal">DUE</th>
@@ -464,7 +465,7 @@ export default function TodosPage() {
                           <th className="py-2 pr-4 font-normal text-right">ACTION</th>
                         </tr>
                       </thead>
-                      <tbody className="text-theme-primary">
+                      <tbody className="text-theme-primary whitespace-nowrap">
                         {subjTodos.map((todo, index) => {
                           const isExpired = !todo.status && new Date(todo.due) < currentTime;
                           return (

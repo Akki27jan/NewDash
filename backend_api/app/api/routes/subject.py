@@ -96,6 +96,8 @@ async def update_subject(
         subject.credits = subject_in.credits
     if subject_in.description is not None:
         subject.description = subject_in.description
+    if subject_in.expected_gpa is not None:
+        subject.expected_gpa = subject_in.expected_gpa
         
     await db.commit()
     await db.refresh(subject)

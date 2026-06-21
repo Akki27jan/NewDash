@@ -12,8 +12,8 @@ class Todo(Base):
     __tablename__ = "todos"
 
     id = Column(String, primary_key=True, index=True)
-    student_id = Column(String, ForeignKey("users.id"), nullable=False, index=True)
-    subject_id = Column(String, ForeignKey("subjects.id"), nullable=False, index=True)
+    student_id = Column(String, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    subject_id = Column(String, ForeignKey("subjects.id", ondelete="CASCADE"), nullable=False, index=True)
     task_name = Column(String, nullable=False)
     status = Column(Boolean, nullable=False, default=False)
     due = Column(DateTime(timezone=True), nullable=False)

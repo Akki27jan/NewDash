@@ -10,5 +10,6 @@ class Subject(Base):
     subject_name = Column(String, nullable=False)
     credits = Column(Float, nullable=False)
     description = Column(String, nullable=True)
+    expected_gpa = Column(Float, nullable=True)
 
     notes = relationship("Note", back_populates="subject", cascade="all, delete-orphan")

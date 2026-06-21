@@ -104,6 +104,23 @@ async def update_threshold(
     await db.refresh(current_user)
     return current_user
 
+from app.schemas.user import UserGPASettingsUpdate
+
+@router.put("/me/gpa_settings", response_model=UserResponse)
+async def update_gpa_settings(
+    settings_data: UserGPASettingsUpdate, 
+    db: AsyncSession = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user)
+):
+    if settings_data.prev_gpa is not None:
+        current_user.prev_gpa = settings_data.prev_gpa
+    if settings_data.prev_credits is not None:
+        current_user.prev_credits = settings_data.prev_credits
+    db.add(current_user)
+    await db.commit()
+    await db.refresh(current_user)
+    return current_user
+
 @router.post("/logout")
 async def logout(response: Response):
     response.delete_cookie(key="access_token", samesite="lax", secure=False)

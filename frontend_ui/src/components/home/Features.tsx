@@ -17,7 +17,7 @@ export default function Features() {
           <span className="text-theme-accent">#</span> AVAILABLE_MODULES
         </h2>
       </div>
-      
+
       <ul className="space-y-4">
         {features.map((feature, index) => (
           <li key={index} className="flex flex-col sm:flex-row sm:items-baseline gap-2">

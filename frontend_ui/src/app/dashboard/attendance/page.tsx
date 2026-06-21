@@ -208,9 +208,10 @@ export default function AttendancePage() {
           <div className="text-theme-muted text-sm">System initialized. No subjects located.</div>
         ) : (
           <div className="overflow-x-auto">
+            <div className="md:hidden text-theme-muted text-xs animate-pulse mb-2">[ swipe left/right to view details ]</div>
             <table className="w-full text-left border-collapse border-spacing-0">
               <thead>
-                <tr className="text-theme-muted text-xs border-b border-theme-border/50">
+                <tr className="text-theme-muted text-xs border-b border-theme-border/50 whitespace-nowrap">
                   <th className="py-2 pr-4 font-normal">S.NO.</th>
                   <th className="py-2 pr-4 font-normal">SUBJECT_NAME</th>
                   <th className="py-2 pr-4 font-normal text-center">ATTENDED</th>
@@ -220,7 +221,7 @@ export default function AttendancePage() {
                   <th className="py-2 pr-4 font-normal">BUNK_PREDICTOR</th>
                 </tr>
               </thead>
-              <tbody className="text-theme-primary">
+              <tbody className="text-theme-primary whitespace-nowrap">
                 {subjects.map((sub, index) => {
                   const rec = records[sub.id] || { attended: 0, total: 0 };
                   const percent = rec.total === 0 ? 0 : (rec.attended / rec.total) * 100;

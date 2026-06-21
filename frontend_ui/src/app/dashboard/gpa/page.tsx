@@ -39,6 +39,47 @@ export default function GPACalcPage() {
   const [prevCredits, setPrevCredits] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const gpaUpdateRef = React.useRef<Record<string, NodeJS.Timeout>>({});
+  const settingsUpdateRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Sync prevGpa and prevCredits with user object if available
+  useEffect(() => {
+    if (user?.prev_gpa !== undefined && user?.prev_gpa !== null) {
+      setPrevGpa(user.prev_gpa.toString());
+    }
+    if (user?.prev_credits !== undefined && user?.prev_credits !== null) {
+      setPrevCredits(user.prev_credits.toString());
+    }
+  }, [user?.prev_gpa, user?.prev_credits]);
+
+  // Handle GPA settings updates to Backend (Debounced)
+  useEffect(() => {
+    if (!user) return;
+    
+    const pGpa = parseFloat(prevGpa);
+    const pCreds = parseFloat(prevCredits);
+
+    const payload: any = {};
+    if (!isNaN(pGpa)) payload.prev_gpa = pGpa;
+    if (!isNaN(pCreds)) payload.prev_credits = pCreds;
+    if (prevGpa === '') payload.prev_gpa = null;
+    if (prevCredits === '') payload.prev_credits = null;
+
+    if (settingsUpdateRef.current) clearTimeout(settingsUpdateRef.current);
+    settingsUpdateRef.current = setTimeout(async () => {
+      try {
+        await fetch(`${API_URL}/api/auth/me/gpa_settings`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'include'
+        });
+      } catch (err) {
+        console.error("Failed to update GPA settings", err);
+      }
+    }, 1000);
+  }, [prevGpa, prevCredits, user]);
+
   // Load from local storage for Mark Calculator
   useEffect(() => {
     const saved = localStorage.getItem('mark_calculator_assessments');
@@ -72,8 +113,8 @@ export default function GPACalcPage() {
 
         // initialize expectedGPAs
         const initialGpas: Record<string, string> = {};
-        data.forEach((s: Subject) => {
-          initialGpas[s.id] = '';
+        data.forEach((s: any) => {
+          initialGpas[s.id] = s.expected_gpa !== null && s.expected_gpa !== undefined ? s.expected_gpa.toString() : '';
         });
         setExpectedGPAs(initialGpas);
       } catch (err: any) {
@@ -124,10 +165,30 @@ export default function GPACalcPage() {
 
   // GPA Predictor Handlers
   const handleGpaChange = (id: string, val: string) => {
-    setExpectedGPAs({
-      ...expectedGPAs,
+    setExpectedGPAs(prev => ({
+      ...prev,
       [id]: val,
-    });
+    }));
+
+    if (gpaUpdateRef.current[id]) {
+      clearTimeout(gpaUpdateRef.current[id]);
+    }
+
+    const numericVal = parseFloat(val);
+    const payloadVal = isNaN(numericVal) ? null : numericVal;
+
+    gpaUpdateRef.current[id] = setTimeout(async () => {
+      try {
+        await fetch(`${API_URL}/api/subjects/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ expected_gpa: payloadVal }),
+          credentials: 'include'
+        });
+      } catch (err) {
+        console.error("Failed to update expected GPA for", id);
+      }
+    }, 500);
   };
 
   // Calculations
@@ -263,9 +324,10 @@ export default function GPACalcPage() {
           <div className="text-theme-muted border-t border-theme-border pt-4">No assessments added. Data is saved locally.</div>
         ) : (
           <div className="overflow-x-auto border-t border-theme-border pt-4">
+            <div className="md:hidden text-theme-muted text-xs animate-pulse mb-2">[ swipe left/right to view details ]</div>
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="text-theme-secondary border-b border-theme-border">
+                <tr className="text-theme-secondary border-b border-theme-border whitespace-nowrap">
                   <th className="py-2 pr-4 font-normal">S.NO</th>
                   <th className="py-2 pr-4 font-normal">NAME</th>
                   <th className="py-2 pr-4 font-normal text-right">SCORE</th>
@@ -274,7 +336,7 @@ export default function GPACalcPage() {
                   <th className="py-2 pr-4 font-normal text-right">ACTION</th>
                 </tr>
               </thead>
-              <tbody className="text-theme-primary">
+              <tbody className="text-theme-primary whitespace-nowrap">
                 {assessments.map((ass, index) => (
                   <tr key={ass.id} className="border-b border-theme-border/30 hover:bg-theme-border/10 transition-colors">
                     <td className="py-2 pr-4">[{String(index + 1).padStart(2, '0')}]</td>
@@ -324,16 +386,17 @@ export default function GPACalcPage() {
           <div className="text-theme-muted">No subjects found. Add subjects in the SUBJECTS tab first.</div>
         ) : (
           <div className="overflow-x-auto">
+            <div className="md:hidden text-theme-muted text-xs animate-pulse mb-2">[ swipe left/right to view details ]</div>
             <table className="w-full text-left border-collapse mb-6">
               <thead>
-                <tr className="text-theme-secondary border-b border-theme-border">
+                <tr className="text-theme-secondary border-b border-theme-border whitespace-nowrap">
                   <th className="py-2 pr-4 font-normal">S.NO</th>
                   <th className="py-2 pr-4 font-normal">SUBJECT</th>
                   <th className="py-2 pr-4 font-normal text-center">CREDITS</th>
                   <th className="py-2 pr-4 font-normal text-right">EXPECTED GPA</th>
                 </tr>
               </thead>
-              <tbody className="text-theme-primary">
+              <tbody className="text-theme-primary whitespace-nowrap">
                 {subjects.map((sub, index) => (
                   <tr key={sub.id} className="border-b border-theme-border/30 hover:bg-theme-border/10 transition-colors">
                     <td className="py-2 pr-4">[{String(index + 1).padStart(2, '0')}]</td>

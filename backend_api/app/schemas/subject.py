@@ -5,6 +5,7 @@ class SubjectBase(BaseModel):
     subject_name: str
     credits: float
     description: Optional[str] = None
+    expected_gpa: Optional[float] = None
 
 class SubjectCreate(SubjectBase):
     pass
@@ -13,6 +14,7 @@ class SubjectUpdate(BaseModel):
     subject_name: Optional[str] = None
     credits: Optional[float] = None
     description: Optional[str] = None
+    expected_gpa: Optional[float] = None
 
 class SubjectResponse(SubjectBase):
     id: str

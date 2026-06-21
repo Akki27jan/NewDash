@@ -11,4 +11,6 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     attendance_threshold = Column(Float, default=75.0, nullable=False)
+    prev_gpa = Column(Float, nullable=True)
+    prev_credits = Column(Float, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
