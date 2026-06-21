@@ -7,3 +7,4 @@ pydantic-settings
 passlib[argon2]
 email-validator
 PyJWT==2.13.0
+apscheduler

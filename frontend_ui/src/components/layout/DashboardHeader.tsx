@@ -42,7 +42,8 @@ export default function DashboardHeader() {
           <Button label="GPA_CALC" color="blue" onClick={() => router.push('/dashboard/gpa')} />
           <Button label="TODO_LIST" color="blue" onClick={() => router.push('/dashboard/todos')} />
           <Button label="NOTES_CENTRE" color="blue" onClick={() => router.push('/dashboard/notes')} />
-          <Button label="CALENDAR" color="blue" />
+          <Button label="CALENDAR" color="blue" onClick={() => router.push('/dashboard/calendar')} />
+          <Button label="TIMERS" color="blue" onClick={() => router.push('/dashboard/timers')} />
           <Button label="ATTENDANCE" color="blue" onClick={() => router.push('/dashboard/attendance')} />
           <Button label="SETTINGS" color="blue" onClick={() => router.push('/dashboard/settings')} />
         </div>
@@ -59,7 +60,8 @@ export default function DashboardHeader() {
           <Button label="GPA_CALC" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/gpa'); }} />
           <Button label="TODO_LIST" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/todos'); }} />
           <Button label="NOTES_CENTRE" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/notes'); }} />
-          <Button label="CALENDAR" color="blue" onClick={() => { setIsMenuOpen(false); }} />
+          <Button label="CALENDAR" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/calendar'); }} />
+          <Button label="TIMERS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/timers'); }} />
           <Button label="ATTENDANCE" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/attendance'); }} />
           <Button label="SETTINGS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/settings'); }} />
         </div>

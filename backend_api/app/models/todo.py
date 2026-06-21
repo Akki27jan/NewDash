@@ -18,5 +18,8 @@ class Todo(Base):
     status = Column(Boolean, nullable=False, default=False)
     due = Column(DateTime(timezone=True), nullable=False)
     priority = Column(Enum(PriorityEnum), nullable=False)
+    email_notified_10m = Column(Boolean, nullable=False, default=False)
+    email_notified_5m = Column(Boolean, nullable=False, default=False)
+    email_notified_0m = Column(Boolean, nullable=False, default=False)
 
     subtasks = relationship("SubTask", back_populates="task", cascade="all, delete-orphan")

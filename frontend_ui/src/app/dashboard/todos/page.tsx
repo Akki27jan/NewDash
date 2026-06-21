@@ -38,13 +38,14 @@ export default function TodosPage() {
   const [expandedTaskIds, setExpandedTaskIds] = useState<Set<string>>(new Set());
 
   // Add Form State
-  const getLocalISOString = (dateObj: Date = new Date()) => {
+  const getLocalISOString = (dateObj: Date = new Date(), offsetMinutes: number = 0) => {
+    const time = dateObj.getTime() + offsetMinutes * 60000;
     const tzOffset = dateObj.getTimezoneOffset() * 60000;
-    return new Date(dateObj.getTime() - tzOffset).toISOString().slice(0, 16);
+    return new Date(time - tzOffset).toISOString().slice(0, 16);
   };
 
   const [taskName, setTaskName] = useState('');
-  const [dueDate, setDueDate] = useState(getLocalISOString());
+  const [dueDate, setDueDate] = useState(getLocalISOString(new Date(), 6));
   const [priority, setPriority] = useState<'Low' | 'Medium' | 'High'>('Medium');
   const [subjectId, setSubjectId] = useState('');
 
@@ -56,7 +57,7 @@ export default function TodosPage() {
 
   // SubTask Form State
   const [newSubTaskName, setNewSubTaskName] = useState('');
-  const [newSubTaskDue, setNewSubTaskDue] = useState(getLocalISOString());
+  const [newSubTaskDue, setNewSubTaskDue] = useState(getLocalISOString(new Date(), 6));
   const [newSubTaskPriority, setNewSubTaskPriority] = useState<'Low' | 'Medium' | 'High'>('Medium');
 
   // Edit State (SubTask)
@@ -147,7 +148,7 @@ export default function TodosPage() {
       if (!res.ok) throw new Error('Failed to add task');
 
       setTaskName('');
-      setDueDate(getLocalISOString());
+      setDueDate(getLocalISOString(new Date(), 6));
       setPriority('Medium');
       setSuccessMsg(`[SUCCESS] Task added successfully`);
       fetchData();
@@ -264,7 +265,7 @@ export default function TodosPage() {
       });
       if (!res.ok) throw new Error('Failed to add sub-task');
       setNewSubTaskName('');
-      setNewSubTaskDue(getLocalISOString());
+      setNewSubTaskDue(getLocalISOString(new Date(), 6));
       setNewSubTaskPriority('Medium');
       setSuccessMsg(`[SUCCESS] Sub-task added successfully`);
       fetchData();

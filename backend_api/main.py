@@ -1,21 +1,28 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.db.database import engine, Base
-from app.api.routes import auth, subject, todo, subtask, note
+from app.api.routes import auth, subject, todo, subtask, note, attendance, events, exams
 from app.core.config import settings
 from app.models.subject import Subject
 from app.models.todo import Todo
 from app.models.subtask import SubTask
 from app.models.note import Note
 from app.models.attendance import Attendance
+from app.models.event import Event
+from app.models.exam import ExamPeriod, Exam
+
+from app.core.scheduler import start_scheduler, stop_scheduler
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: Create tables if they don't exist
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    
+    start_scheduler()
     yield
     # Shutdown: Clean up if necessary
+    stop_scheduler()
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -40,8 +47,9 @@ app.include_router(subject.router, prefix="/api/subjects", tags=["subjects"])
 app.include_router(todo.router, prefix="/api/todos", tags=["todos"])
 app.include_router(subtask.router, prefix="/api/subtasks", tags=["subtasks"])
 app.include_router(note.router, prefix="/api/notes", tags=["notes"])
-from app.api.routes import attendance
 app.include_router(attendance.router, prefix="/api/attendance", tags=["attendance"])
+app.include_router(events.router, prefix="/api/events", tags=["events"])
+app.include_router(exams.router, prefix="/api/exams", tags=["exams"])
 
 @app.get("/")
 async def root():
