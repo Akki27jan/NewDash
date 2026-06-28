@@ -8,18 +8,24 @@ The frontend is built using **Next.js (App Router)** and **React**. It utilizes 
 
 ### Directory Structure (`src/`)
 - **`app/`**: Contains the core Next.js routing and layout files.
-  - `layout.tsx`: Defines the global HTML structure, injects the `Geist_Mono` font, and applies the global dark theme background.
-  - `page.tsx`: The landing page that composes the `Header`, `Hero`, `Features`, and `Footer` components.
-  - `globals.css`: Contains standard Tailwind CSS imports.
+  - `layout.tsx`, `page.tsx`, `globals.css`: Root landing page and global styling.
+  - `login/`, `signup/`: Authentication pages.
+  - **`dashboard/`**: The main authenticated application area containing sub-routes for all core modules:
+    - `attendance/`: Tracks student attendance.
+    - `calendar/`: Exam and event calendar module.
+    - `gpa/`: Mark calculator and GPA predictor.
+    - `notes/`: Text-based note taking.
+    - `settings/`: User configuration and email notification settings.
+    - `subjects/`: Subject CRUD management.
+    - `timers/`: Pomodoro, normal, and recurring timers.
+    - `todos/`: Task management with background tracking.
 - **`components/`**: Modular, reusable React components grouped by feature/domain.
-  - **`home/`**: Components specific to the landing page.
-    - `Hero.tsx`: The main ASCII art hero section.
-    - `Features.tsx`: The module list styled as a CLI menu.
-  - **`layout/`**: Global structural components.
-    - `Header.tsx`: Top navigation bar containing the logo and authentication buttons.
-    - `Footer.tsx`: Terminal-style footer.
-  - **`ui/`**: Low-level, reusable UI primitives.
-    - `Button.tsx`: A customizable button component with 'red' and 'blue' variants, styled with bracket notation (e.g., `[LOGIN]`).
+  - **`auth/`**: `LoginForm.tsx`, `SignupForm.tsx` handling JWT auth.
+  - **`calendar/`**: `DailyView`, `MonthlyView`, and various modals for event management.
+  - **`home/`**: Landing page components (`Hero.tsx`, `Features.tsx`).
+  - **`layout/`**: Global structural components (`Header.tsx`, `Footer.tsx`).
+  - **`timers/`**: Timer UI components (`NormalTimer`, `PomodoroTimer`, `RecurringTimer`, `Stopwatch`).
+  - **`ui/`**: Low-level, reusable UI primitives (`Button.tsx`).
 
 ## 2. Aesthetic & Design System
 
@@ -44,13 +50,14 @@ The color scheme is extremely minimal, relying on a pure black background and hi
 
 ### 2.4 Feature-Specific Design Implementations
 
-**Subjects & GPA_CALC Tabs**:
-- **Layout**: Both tabs encapsulate sections within rigid blue borders (`border border-blue-900`) and pure black backgrounds (`bg-black`) to mimic distinct terminal windows or panes.
-- **Headers**: Section headers are styled as command prompts (e.g., `<span className="text-red-500">root@newdash</span>:~/subjects# _` or `system:~/gpa_calc/predictor# ./run_prediction`) indicating the current active directory or script.
+**Dashboard Modules (Subjects, GPA, Todos, Calendar, Timers, etc.)**:
+- **Layout**: All tabs encapsulate sections within rigid blue borders (`border border-blue-900`) and pure black backgrounds (`bg-black`) to mimic distinct terminal windows or panes.
+- **Headers**: Section headers are styled as command prompts (e.g., `<span className="text-red-500">user@newdash</span>:~/module_name# _`) indicating the current active directory or script. Dynamic user headers are injected into the top navigation.
 - **Data Tables**: Uses a `border-collapse` layout with thin blue bottom borders (`border-b border-blue-900/30`) for rows. Hovering over a row provides a subtle blue highlight (`hover:bg-blue-900/10`).
 - **Indexing**: Row numbers or indices utilize zero-padded bracket formatting, e.g., `[01]`, `[02]`.
 - **Forms and Inputs**: Input fields use transparent backgrounds (`bg-transparent`) with monospace placeholder text styled like CLI instructions (e.g., `[ Enter Subject Name ]`). Focus states highlight the borders with red (`focus:border-red-500 focus:ring-1 focus:ring-red-500`) to indicate active data entry.
 - **Inline Actions**: Action buttons within tables are text-based and bracketed (e.g., `[EDIT]`, `[DEL]`, `[SAVE]`) with context-aware hover colors (red for destructive actions, green for saves, blue/yellow for editing).
+- **Notifications**: Incorporates dual-notification systems (email and browser OS notifications) for task tracking, visually integrating background task indicators within the retro theme.
 - **Summary blocks**: Highlight final outputs or important metadata in distinct bounded boxes using background shading (`bg-blue-900/10`) and green monospace text for successful calculations or values.
 
 ## 3. Future Expansion Guidelines
