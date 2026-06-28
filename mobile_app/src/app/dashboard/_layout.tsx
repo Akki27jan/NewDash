@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, ScrollView } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import TerminalButton from '@/components/TerminalButton';
@@ -8,9 +8,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { TimerProvider } from '@/context/TimerContext';
 
 export default function DashboardLayout() {
-  const { checkAuth } = useAuth();
+  const { checkAuth, user, isLoading } = useAuth();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.replace('/login');
+    }
+  }, [user, isLoading]);
 
   const handleLogout = async () => {
     try {
