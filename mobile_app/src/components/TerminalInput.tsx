@@ -39,7 +39,7 @@ export default function TerminalInput({ name, label, control, rules, ...props }:
             setIsFocused(false);
           }}
           onFocus={() => setIsFocused(true)}
-          value={field.value}
+          value={field.value || ""}
           autoCapitalize="none"
           placeholderTextColor="#60a5fa80"
           {...props}

@@ -11,6 +11,7 @@ export default function DashboardLayout() {
   const { checkAuth, user, isLoading } = useAuth();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(73);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -45,27 +46,34 @@ export default function DashboardLayout() {
 
   return (
     <SafeAreaView className="flex-1 bg-theme-bg" edges={['top', 'left', 'right']}>
-      {/* Top Header */}
-      <View className="flex-row items-center justify-between p-4 border-b border-theme-border z-20 bg-theme-bg">
-        <Text className="text-theme-primary font-bold text-xl font-mono tracking-widest">
-          NewDash_
-        </Text>
-        <View className="flex-row gap-2">
-          <TerminalButton 
-            title={isMenuOpen ? "CLOSE" : "MENU"} 
-            onPress={() => setIsMenuOpen(!isMenuOpen)} 
-          />
-          <TerminalButton 
-            title="LOGOUT" 
-            variant="danger" 
-            onPress={handleLogout} 
-          />
+      {/* Top Header and Dropdown Container */}
+      <View className="z-50">
+        <View 
+          className="flex-row items-center justify-between p-4 border-b border-theme-border bg-theme-bg"
+          onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
+        >
+          <Text className="text-theme-primary font-bold text-xl font-mono tracking-widest">
+            NewDash_
+          </Text>
+          <View className="flex-row gap-2">
+            <TerminalButton 
+              title={isMenuOpen ? "CLOSE" : "MENU"} 
+              onPress={() => setIsMenuOpen(!isMenuOpen)} 
+            />
+            <TerminalButton 
+              title="LOGOUT" 
+              variant="danger" 
+              onPress={handleLogout} 
+            />
+          </View>
         </View>
-      </View>
 
-      {/* Dropdown Menu */}
-      {isMenuOpen && (
-        <View className="absolute top-[73px] left-0 right-0 bg-theme-bg border-b border-theme-border z-10 p-4">
+        {/* Dropdown Menu */}
+        {isMenuOpen && (
+          <View 
+            className="absolute left-0 right-0 bg-theme-bg border-b border-theme-border p-4 shadow-lg" 
+            style={{ top: headerHeight }}
+          >
           <ScrollView className="max-h-64">
             <View className="flex-col gap-2">
               {navItems.map((item) => (
@@ -86,6 +94,7 @@ export default function DashboardLayout() {
           </ScrollView>
         </View>
       )}
+      </View>
 
       <TimerProvider>
         <Stack screenOptions={{ headerShown: false }} />

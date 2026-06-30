@@ -22,7 +22,7 @@ export default function DashboardHeader() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-50">
       <header className="flex items-center justify-between p-4 border-b border-theme-border">
         <div className="flex-1 min-w-max">
           <Link href="/dashboard" className="text-theme-primary font-bold text-xl tracking-widest hover:text-theme-accent transition-colors inline-block">
@@ -55,15 +55,15 @@ export default function DashboardHeader() {
 
       {/* Mobile Dropdown */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-theme-bg border-b border-theme-border z-50 flex flex-col p-4 gap-4">
-          <Button label="SUBJECTS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/subjects'); }} />
-          <Button label="GPA_CALC" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/gpa'); }} />
-          <Button label="TODO_LIST" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/todos'); }} />
-          <Button label="NOTES_CENTRE" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/notes'); }} />
-          <Button label="CALENDAR" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/calendar'); }} />
-          <Button label="TIMERS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/timers'); }} />
-          <Button label="ATTENDANCE" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/attendance'); }} />
-          <Button label="SETTINGS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/settings'); }} />
+        <div className="md:hidden absolute top-full left-0 right-0 bg-theme-bg border-b border-theme-border shadow-2xl flex flex-col p-4 gap-3">
+          <Button className="w-full text-left" label="SUBJECTS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/subjects'); }} />
+          <Button className="w-full text-left" label="GPA_CALC" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/gpa'); }} />
+          <Button className="w-full text-left" label="TODO_LIST" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/todos'); }} />
+          <Button className="w-full text-left" label="NOTES_CENTRE" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/notes'); }} />
+          <Button className="w-full text-left" label="CALENDAR" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/calendar'); }} />
+          <Button className="w-full text-left" label="TIMERS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/timers'); }} />
+          <Button className="w-full text-left" label="ATTENDANCE" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/attendance'); }} />
+          <Button className="w-full text-left" label="SETTINGS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/settings'); }} />
         </div>
       )}
     </div>
