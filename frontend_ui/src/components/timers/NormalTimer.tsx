@@ -96,7 +96,7 @@ export default function NormalTimer() {
           <Button label="[RESET]" color="red" onClick={handleReset} />
         </div>
         {!(normal.status === 'idle' && normal.timeRemaining === 0) && (
-          <Button label="[CANCEL_TO_MENU]" color="gray" onClick={handleCancel} />
+          <Button label="[CANCEL_TO_MENU]" color="yellow" onClick={handleCancel} />
         )}
       </div>
 
