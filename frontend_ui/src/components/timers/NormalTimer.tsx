@@ -1,17 +1,29 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTimers } from '@/context/TimerContext';
 import Button from '../ui/Button';
 
 export default function NormalTimer() {
   const { normal, setNormal } = useTimers();
   const [inputMinutes, setInputMinutes] = useState(25);
+  const [youtubeLink, setYoutubeLink] = useState('');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('savedYoutubeAlarmLink');
+    if (saved) setYoutubeLink(saved);
+  }, []);
+
+  const handleYoutubeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setYoutubeLink(val);
+    localStorage.setItem('savedYoutubeAlarmLink', val);
+  };
 
   const handleStart = () => {
     if (normal.status === 'idle' || normal.status === 'paused') {
       if (normal.timeRemaining === 0) {
-        setNormal({ duration: inputMinutes * 60, timeRemaining: inputMinutes * 60, status: 'running' });
+        setNormal({ duration: inputMinutes * 60, timeRemaining: inputMinutes * 60, status: 'running', youtubeUrl: youtubeLink || undefined });
       } else {
         setNormal(prev => ({ ...prev, status: 'running' }));
       }
@@ -25,7 +37,11 @@ export default function NormalTimer() {
   };
 
   const handleReset = () => {
-    setNormal({ duration: inputMinutes * 60, timeRemaining: inputMinutes * 60, status: 'idle' });
+    setNormal({ duration: inputMinutes * 60, timeRemaining: inputMinutes * 60, status: 'idle', youtubeUrl: youtubeLink || undefined });
+  };
+
+  const handleCancel = () => {
+    setNormal({ duration: 0, timeRemaining: 0, status: 'idle', youtubeUrl: youtubeLink || undefined });
   };
 
   const formatTime = (seconds: number) => {
@@ -56,17 +72,32 @@ export default function NormalTimer() {
               min="1"
             />
           </label>
+          <label className="flex flex-col gap-1 mt-2">
+            <span>YOUTUBE_ALARM_LINK (OPTIONAL):</span>
+            <input 
+              type="text" 
+              value={youtubeLink} 
+              onChange={handleYoutubeChange}
+              placeholder="https://youtube.com/watch?v=..."
+              className="bg-theme-bg border border-theme-border text-theme-primary p-2 font-mono focus:outline-none focus:border-theme-accent"
+            />
+          </label>
         </div>
       )}
 
-      <div className="flex gap-4 mt-4 w-full justify-center">
-        {normal.status !== 'running' && (
-          <Button label="[START]" color="blue" onClick={handleStart} />
+      <div className="flex flex-col gap-4 mt-4 w-full items-center">
+        <div className="flex gap-4 w-full justify-center">
+          {normal.status !== 'running' && (
+            <Button label="[START]" color="blue" onClick={handleStart} />
+          )}
+          {normal.status === 'running' && (
+            <Button label="[PAUSE]" color="yellow" onClick={handlePause} />
+          )}
+          <Button label="[RESET]" color="red" onClick={handleReset} />
+        </div>
+        {!(normal.status === 'idle' && normal.timeRemaining === 0) && (
+          <Button label="[CANCEL_TO_MENU]" color="gray" onClick={handleCancel} />
         )}
-        {normal.status === 'running' && (
-          <Button label="[PAUSE]" color="yellow" onClick={handlePause} />
-        )}
-        <Button label="[RESET]" color="red" onClick={handleReset} />
       </div>
 
       <div className="text-theme-muted text-xs mt-4 text-center">

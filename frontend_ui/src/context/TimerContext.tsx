@@ -8,6 +8,7 @@ export interface NormalTimerState {
   duration: number;
   timeRemaining: number;
   status: TimerStatus;
+  youtubeUrl?: string;
 }
 
 export interface PomodoroTimerState {
@@ -16,6 +17,7 @@ export interface PomodoroTimerState {
   timeRemaining: number;
   phase: 'work' | 'break';
   status: TimerStatus;
+  youtubeUrl?: string;
 }
 
 export interface RecurringTimerState {
@@ -24,6 +26,7 @@ export interface RecurringTimerState {
   totalLoops: number;
   currentLoop: number;
   status: TimerStatus;
+  youtubeUrl?: string;
 }
 
 export interface StopwatchState {
@@ -41,6 +44,8 @@ interface TimerContextType {
   setRecurring: React.Dispatch<React.SetStateAction<RecurringTimerState>>;
   stopwatch: StopwatchState;
   setStopwatch: React.Dispatch<React.SetStateAction<StopwatchState>>;
+  playingYoutubeUrl: string | null;
+  setPlayingYoutubeUrl: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const TimerContext = createContext<TimerContextType | undefined>(undefined);
@@ -50,6 +55,7 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
   const [pomodoro, setPomodoro] = useState<PomodoroTimerState>({ workDuration: 25 * 60, breakDuration: 5 * 60, timeRemaining: 25 * 60, phase: 'work', status: 'idle' });
   const [recurring, setRecurring] = useState<RecurringTimerState>({ duration: 0, timeRemaining: 0, totalLoops: 1, currentLoop: 1, status: 'idle' });
   const [stopwatch, setStopwatch] = useState<StopwatchState>({ timeElapsed: 0, status: 'idle', laps: [] });
+  const [playingYoutubeUrl, setPlayingYoutubeUrl] = useState<string | null>(null);
 
   const stopwatchTickRef = useRef<number>(Date.now());
   const countdownTickRef = useRef<number>(Date.now());
@@ -94,6 +100,7 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
             const nextTime = Math.max(0, prev.timeRemaining - secondsElapsed);
             if (nextTime === 0) {
               triggerNotification("Timer Finished", "Your normal timer has completed.");
+              if (prev.youtubeUrl) setPlayingYoutubeUrl(prev.youtubeUrl);
               return { ...prev, timeRemaining: 0, status: 'idle' };
             }
             return { ...prev, timeRemaining: nextTime };
@@ -106,12 +113,13 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
           if (prev.status === 'running' && prev.timeRemaining > 0) {
             const nextTime = prev.timeRemaining - secondsElapsed;
             if (nextTime <= 0) {
+              if (prev.youtubeUrl) setPlayingYoutubeUrl(prev.youtubeUrl);
               if (prev.phase === 'work') {
                 triggerNotification("Work Phase Over", "Time for a break!");
-                return { ...prev, phase: 'break', timeRemaining: prev.breakDuration };
+                return { ...prev, phase: 'break', timeRemaining: prev.breakDuration, status: 'paused' };
               } else {
                 triggerNotification("Break Over", "Time to get back to work!");
-                return { ...prev, phase: 'work', timeRemaining: prev.workDuration, status: 'idle' }; // Pause after break by default
+                return { ...prev, phase: 'work', timeRemaining: prev.workDuration, status: 'paused' }; 
               }
             }
             return { ...prev, timeRemaining: nextTime };
@@ -129,6 +137,7 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
                 return { ...prev, currentLoop: prev.currentLoop + 1, timeRemaining: prev.duration };
               } else {
                 triggerNotification("Recurring Timer Finished", `All ${prev.totalLoops} loops completed.`);
+                if (prev.youtubeUrl) setPlayingYoutubeUrl(prev.youtubeUrl);
                 return { ...prev, timeRemaining: 0, status: 'idle' };
               }
             }
@@ -144,7 +153,7 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <TimerContext.Provider value={{ normal, setNormal, pomodoro, setPomodoro, recurring, setRecurring, stopwatch, setStopwatch }}>
+    <TimerContext.Provider value={{ normal, setNormal, pomodoro, setPomodoro, recurring, setRecurring, stopwatch, setStopwatch, playingYoutubeUrl, setPlayingYoutubeUrl }}>
       {children}
     </TimerContext.Provider>
   );

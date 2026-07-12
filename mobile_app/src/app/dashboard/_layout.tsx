@@ -11,7 +11,6 @@ export default function DashboardLayout() {
   const { checkAuth, user, isLoading } = useAuth();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [headerHeight, setHeaderHeight] = useState(73);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -46,59 +45,57 @@ export default function DashboardLayout() {
 
   return (
     <SafeAreaView className="flex-1 bg-theme-bg" edges={['top', 'left', 'right']}>
-      {/* Top Header and Dropdown Container */}
-      <View className="z-50">
-        <View 
-          className="flex-row items-center justify-between p-4 border-b border-theme-border bg-theme-bg"
-          onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
-        >
-          <Text className="text-theme-primary font-bold text-xl font-mono tracking-widest">
-            NewDash_
-          </Text>
-          <View className="flex-row gap-2">
-            <TerminalButton 
-              title={isMenuOpen ? "CLOSE" : "MENU"} 
-              onPress={() => setIsMenuOpen(!isMenuOpen)} 
-            />
-            <TerminalButton 
-              title="LOGOUT" 
-              variant="danger" 
-              onPress={handleLogout} 
-            />
-          </View>
+      {/* Top Header */}
+      <View className="flex-row items-center justify-between p-4 border-b border-theme-border bg-theme-bg z-50">
+        <Text className="text-theme-primary font-bold text-xl font-mono tracking-widest">
+          NewDash_
+        </Text>
+        <View className="flex-row gap-2">
+          <TerminalButton 
+            title={isMenuOpen ? "CLOSE" : "MENU"} 
+            onPress={() => setIsMenuOpen(!isMenuOpen)} 
+          />
+          <TerminalButton 
+            title="LOGOUT" 
+            variant="danger" 
+            onPress={handleLogout} 
+          />
         </View>
-
-        {/* Dropdown Menu */}
-        {isMenuOpen && (
-          <View 
-            className="absolute left-0 right-0 bg-theme-bg border-b border-theme-border p-4 shadow-lg" 
-            style={{ top: headerHeight }}
-          >
-          <ScrollView className="max-h-64">
-            <View className="flex-col gap-2">
-              {navItems.map((item) => (
-                <Pressable
-                  key={item.route}
-                  className="py-3 px-4 border border-theme-border/50 active:bg-theme-border-bg"
-                  onPress={() => {
-                    setIsMenuOpen(false);
-                    router.push(item.route as any);
-                  }}
-                >
-                  <Text className="text-theme-primary font-mono text-base">
-                    [ {item.label} ]
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
-      )}
       </View>
 
-      <TimerProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </TimerProvider>
+      {/* Main Content Area */}
+      <View className="flex-1">
+        {/* Dropdown Menu - absolutely positioned to the top of the content area */}
+        {isMenuOpen && (
+          <View 
+            className="absolute left-0 right-0 top-0 bg-theme-bg border-b border-theme-border p-4 shadow-lg z-50" 
+            style={{ elevation: 10 }}
+          >
+            <ScrollView className="max-h-64" showsVerticalScrollIndicator={false}>
+              <View className="flex-col gap-2">
+                {navItems.map((item) => (
+                  <Pressable
+                    key={item.route}
+                    className="py-3 px-4 border border-theme-border/50 active:bg-theme-border-bg"
+                    onPress={() => {
+                      setIsMenuOpen(false);
+                      router.push(item.route as any);
+                    }}
+                  >
+                    <Text className="text-theme-primary font-mono text-base">
+                      [ {item.label} ]
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+        )}
+
+        <TimerProvider>
+          <Stack screenOptions={{ headerShown: false }} />
+        </TimerProvider>
+      </View>
     </SafeAreaView>
   );
 }

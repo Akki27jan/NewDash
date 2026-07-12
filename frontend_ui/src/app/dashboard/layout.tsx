@@ -3,6 +3,7 @@ import DashboardHeader from '@/components/layout/DashboardHeader';
 import Footer from '@/components/layout/Footer';
 import NotificationEngine from '@/components/layout/NotificationEngine';
 import { TimerProvider } from '@/context/TimerContext';
+import YoutubeAlarmPlayer from '@/components/timers/YoutubeAlarmPlayer';
 
 export default function DashboardLayout({
   children,
@@ -13,6 +14,7 @@ export default function DashboardLayout({
     <TimerProvider>
       <div className="flex flex-col min-h-screen">
         <NotificationEngine />
+        <YoutubeAlarmPlayer />
         <DashboardHeader />
         <div className="flex-grow flex flex-col">
           {children}

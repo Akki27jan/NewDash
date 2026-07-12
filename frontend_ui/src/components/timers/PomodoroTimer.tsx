@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTimers } from '@/context/TimerContext';
 import Button from '../ui/Button';
 
@@ -8,6 +8,18 @@ export default function PomodoroTimer() {
   const { pomodoro, setPomodoro } = useTimers();
   const [workInput, setWorkInput] = useState(25);
   const [breakInput, setBreakInput] = useState(5);
+  const [youtubeLink, setYoutubeLink] = useState('');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('savedYoutubeAlarmLink');
+    if (saved) setYoutubeLink(saved);
+  }, []);
+
+  const handleYoutubeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setYoutubeLink(val);
+    localStorage.setItem('savedYoutubeAlarmLink', val);
+  };
 
   const handleStart = () => {
     if (pomodoro.status === 'idle' || pomodoro.status === 'paused') {
@@ -18,7 +30,8 @@ export default function PomodoroTimer() {
           breakDuration: breakInput * 60, 
           timeRemaining: workInput * 60, 
           phase: 'work',
-          status: 'running' 
+          status: 'running',
+          youtubeUrl: youtubeLink || undefined
         });
       } else {
         setPomodoro(prev => ({ ...prev, status: 'running' }));
@@ -38,7 +51,8 @@ export default function PomodoroTimer() {
       breakDuration: breakInput * 60, 
       timeRemaining: workInput * 60, 
       phase: 'work',
-      status: 'idle' 
+      status: 'idle',
+      youtubeUrl: youtubeLink || undefined
     });
   };
 
@@ -84,6 +98,19 @@ export default function PomodoroTimer() {
               min="1"
             />
           </label>
+        </div>
+      )}
+
+      {pomodoro.status === 'idle' && (
+        <div className="flex flex-col gap-1 w-full text-theme-secondary text-sm mt-2">
+          <span>YOUTUBE_ALARM_LINK (OPTIONAL):</span>
+          <input 
+            type="text" 
+            value={youtubeLink} 
+            onChange={handleYoutubeChange}
+            placeholder="https://youtube.com/watch?v=..."
+            className="bg-theme-bg border border-theme-border text-theme-primary p-2 font-mono focus:outline-none focus:border-theme-accent w-full"
+          />
         </div>
       )}
 
