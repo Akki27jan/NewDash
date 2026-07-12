@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.db.database import engine, Base
-from app.api.routes import auth, subject, todo, subtask, note, attendance, events, exams
+from app.api.routes import auth, subject, todo, subtask, note, attendance, events, exams, flashcards
 from app.core.config import settings
 from app.models.subject import Subject
 from app.models.todo import Todo
@@ -10,6 +10,7 @@ from app.models.note import Note
 from app.models.attendance import Attendance
 from app.models.event import Event
 from app.models.exam import ExamPeriod, Exam
+from app.models.flashcard import Flashcard
 
 from app.core.scheduler import start_scheduler, stop_scheduler
 
@@ -48,6 +49,7 @@ app.include_router(note.router, prefix="/api/notes", tags=["notes"])
 app.include_router(attendance.router, prefix="/api/attendance", tags=["attendance"])
 app.include_router(events.router, prefix="/api/events", tags=["events"])
 app.include_router(exams.router, prefix="/api/exams", tags=["exams"])
+app.include_router(flashcards.router, prefix="/api/flashcards", tags=["flashcards"])
 
 @app.get("/")
 async def root():

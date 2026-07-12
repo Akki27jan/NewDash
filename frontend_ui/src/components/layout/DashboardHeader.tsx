@@ -45,6 +45,7 @@ export default function DashboardHeader() {
           <Button label="CALENDAR" color="blue" onClick={() => router.push('/dashboard/calendar')} />
           <Button label="TIMERS" color="blue" onClick={() => router.push('/dashboard/timers')} />
           <Button label="ATTENDANCE" color="blue" onClick={() => router.push('/dashboard/attendance')} />
+          <Button label="FLASH_CARDS" color="blue" onClick={() => router.push('/dashboard/flashcards')} />
           <Button label="SETTINGS" color="blue" onClick={() => router.push('/dashboard/settings')} />
         </div>
 
@@ -63,6 +64,7 @@ export default function DashboardHeader() {
           <Button className="w-full text-left" label="CALENDAR" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/calendar'); }} />
           <Button className="w-full text-left" label="TIMERS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/timers'); }} />
           <Button className="w-full text-left" label="ATTENDANCE" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/attendance'); }} />
+          <Button className="w-full text-left" label="FLASH_CARDS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/flashcards'); }} />
           <Button className="w-full text-left" label="SETTINGS" color="blue" onClick={() => { setIsMenuOpen(false); router.push('/dashboard/settings'); }} />
         </div>
       )}

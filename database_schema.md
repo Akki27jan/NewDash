@@ -52,3 +52,12 @@ Here is the current database structure based on the models defined in the backen
 | `subject_id` | String | Foreign Key (`subjects.id`) ON DELETE CASCADE, Not Null, Indexed, Unique |
 | `attended` | Integer | Not Null, Default: 0 |
 | `total` | Integer | Not Null, Default: 0 |
+
+## flashcards -:
+| `id` | String | Primary Key, Indexed |
+| `title` | String | Not Null |
+| `subject_id` | String | Foreign Key (`subjects.id`) ON DELETE CASCADE, Not Null, Indexed |
+| `topic` | String | Not Null, Indexed |
+| `front` | Text | Not Null |
+| `back` | Text | Not Null |
+| `created_at` | DateTime | Default: Current Timestamp (`func.now()`) |

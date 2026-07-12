@@ -13,3 +13,4 @@ class Subject(Base):
     expected_gpa = Column(Float, nullable=True)
 
     notes = relationship("Note", back_populates="subject", cascade="all, delete-orphan")
+    flashcards = relationship("Flashcard", back_populates="subject", cascade="all, delete-orphan")
