@@ -23,7 +23,7 @@ export default function DashboardPage() {
           fetch(`${API_URL}/api/subjects/`, { credentials: 'include' }),
           fetch(`${API_URL}/api/todos/`, { credentials: 'include' })
         ]);
-        
+
         if (subRes.ok) {
           const subData = await subRes.json();
           setSubjectCount(subData.length);
@@ -58,7 +58,7 @@ export default function DashboardPage() {
           [System status: ONLINE] <br />
           [Number of Subjects: {subjectCount}]
         </div>
-        
+
         <div className="border-t border-theme-border/50 pt-4 mt-4 w-full">
           <h2 className="text-theme-primary font-bold mb-2">Pending Active Tasks:</h2>
           <div className="overflow-x-auto w-full pb-2">
@@ -68,7 +68,7 @@ export default function DashboardPage() {
                   const d = new Date(t.due);
                   const dateStr = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
                   return (
-                    <li key={t.id}>[{String(idx+1).padStart(2, '0')}] {t.task_name} <span className="text-theme-muted">- Due: {dateStr}</span></li>
+                    <li key={t.id}>[{String(idx + 1).padStart(2, '0')}] {t.task_name} <span className="text-theme-muted">- Due: {dateStr}</span></li>
                   );
                 })}
               </ul>
@@ -76,6 +76,19 @@ export default function DashboardPage() {
               <div className="text-theme-muted text-xs sm:text-sm">[No pending tasks]</div>
             )}
           </div>
+        </div>
+        <div className="border-t border-theme-border/50 pt-4 mt-4 w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 className="text-theme-primary font-bold text-sm mb-1">NewDash Mobile Access:</h2>
+            <p className="text-theme-muted text-xs">Download the standalone Android package for your phone.</p>
+          </div>
+          <a
+            href="/NewDash.apk"
+            download="NewDash.apk"
+            className="px-4 py-2 border border-theme-accent text-theme-accent hover:bg-theme-accent hover:text-black font-bold text-xs sm:text-sm transition-colors uppercase whitespace-nowrap"
+          >
+            [INSTALL .APK]
+          </a>
         </div>
       </div>
     </main>

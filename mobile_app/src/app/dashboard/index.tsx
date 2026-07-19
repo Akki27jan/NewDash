@@ -118,6 +118,9 @@ export default function DashboardScreen() {
           <TerminalButton title="ATTENDANCE" onPress={() => router.push('/dashboard/attendance')} />
         </View>
         <View className="w-[48%]">
+          <TerminalButton title="FLASHCARDS" onPress={() => router.push('/dashboard/flashcards')} />
+        </View>
+        <View className="w-[48%]">
           <TerminalButton title="SETTINGS" onPress={() => router.push('/dashboard/settings')} />
         </View>
       </View>

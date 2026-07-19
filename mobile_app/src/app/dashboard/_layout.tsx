@@ -48,9 +48,11 @@ export default function DashboardLayout() {
     <SafeAreaView className="flex-1 bg-theme-bg" edges={['top', 'left', 'right']}>
       {/* Top Header */}
       <View className="flex-row items-center justify-between p-4 border-b border-theme-border bg-theme-bg z-50">
-        <Text className="text-theme-primary font-bold text-xl font-mono tracking-widest">
-          NewDash_
-        </Text>
+        <Pressable onPress={() => router.push('/dashboard')}>
+          <Text className="text-theme-primary font-bold text-xl font-mono tracking-widest">
+            NewDash_
+          </Text>
+        </Pressable>
         <View className="flex-row gap-2">
           <TerminalButton 
             title={isMenuOpen ? "CLOSE" : "MENU"} 
