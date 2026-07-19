@@ -40,6 +40,7 @@ export default function DashboardLayout() {
     { label: 'CALENDAR', route: '/dashboard/calendar' },
     { label: 'TIMERS', route: '/dashboard/timers' },
     { label: 'ATTENDANCE', route: '/dashboard/attendance' },
+    { label: 'FLASHCARDS', route: '/dashboard/flashcards' },
     { label: 'SETTINGS', route: '/dashboard/settings' },
   ];
 

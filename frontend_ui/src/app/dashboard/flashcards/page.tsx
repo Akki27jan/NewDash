@@ -33,6 +33,10 @@ export default function FlashcardsPage() {
   const [front, setFront] = useState('');
   const [back, setBack] = useState('');
 
+  // Bulk Upload State
+  const [isBulkMode, setIsBulkMode] = useState(false);
+  const [bulkCards, setBulkCards] = useState([{ id: 'b1', title: '', front: '', back: '' }]);
+
   // UI State
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -132,6 +136,66 @@ export default function FlashcardsPage() {
       setTopic('');
       setFront('');
       setBack('');
+      fetchData();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
+    }
+  };
+
+  const handleAddBulkRow = () => {
+    setBulkCards([...bulkCards, { id: `b${Date.now()}`, title: '', front: '', back: '' }]);
+  };
+
+  const handleRemoveBulkRow = (id: string) => {
+    if (bulkCards.length > 1) {
+      setBulkCards(bulkCards.filter(c => c.id !== id));
+    }
+  };
+
+  const updateBulkCard = (id: string, field: 'title' | 'front' | 'back', value: string) => {
+    setBulkCards(bulkCards.map(c => c.id === id ? { ...c, [field]: value } : c));
+  };
+
+  const handleBulkSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMsg('');
+
+    if (!subjectId || !topic) {
+      setError('[ERROR] Subject and Topic are required for bulk upload.');
+      return;
+    }
+
+    const validCards = bulkCards.filter(c => c.title && c.front && c.back);
+    if (validCards.length === 0) {
+      setError('[ERROR] No complete flashcards to upload. Please fill out all fields for at least one card.');
+      return;
+    }
+
+    try {
+      const payload = validCards.map(c => ({
+        subject_id: subjectId,
+        topic,
+        title: c.title,
+        front: c.front,
+        back: c.back
+      }));
+
+      const res = await fetch(`${API_URL}/api/flashcards/bulk`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.detail || 'Failed to bulk upload flashcards');
+      }
+
+      setSuccessMsg(`[SUCCESS] ${validCards.length} flashcard(s) added successfully`);
+      setBulkCards([{ id: `b${Date.now()}`, title: '', front: '', back: '' }]);
       fetchData();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -414,84 +478,179 @@ export default function FlashcardsPage() {
         <>
           {/* CREATE FORM */}
           <div className="border border-theme-border p-6 bg-theme-bg">
-            <h2 className="text-theme-primary font-bold text-xl mb-4 border-b border-theme-border pb-2 flex items-center">
-              <span className="text-theme-accent mr-2">&gt;</span> [CREATE_FLASHCARD]
-            </h2>
+            <div className="flex justify-between items-center mb-4 border-b border-theme-border pb-2">
+              <h2 className="text-theme-primary font-bold text-xl flex items-center">
+                <span className="text-theme-accent mr-2">&gt;</span> [CREATE_FLASHCARD]
+              </h2>
+              <div className="flex gap-2">
+                <Button label="SINGLE_MODE" color={!isBulkMode ? "green" : "blue"} onClick={() => setIsBulkMode(false)} />
+                <Button label="BULK_MODE" color={isBulkMode ? "green" : "blue"} onClick={() => setIsBulkMode(true)} />
+              </div>
+            </div>
 
             {error && <div className="text-theme-accent text-sm mb-4 bg-theme-accent-bg p-2 border border-theme-accent">{error}</div>}
             {successMsg && <div className="text-theme-success text-sm mb-4 bg-theme-success-bg p-2 border border-theme-success">{successMsg}</div>}
 
-            <form onSubmit={handleAddFlashcard} className="flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex items-center flex-1">
-                  <label className="text-theme-secondary w-32">&gt; Subject:</label>
-                  {subjects.length > 0 ? (
-                    <select
-                      value={subjectId}
-                      onChange={(e) => setSubjectId(e.target.value)}
-                      className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent"
-                    >
-                      {subjects.map(s => (
-                        <option key={s.id} value={s.id} className="bg-theme-bg text-theme-primary">{s.subject_name}</option>
-                      ))}
-                    </select>
-                  ) : (
-                    <span className="text-theme-accent text-sm">NO SUBJECTS AVAILABLE</span>
-                  )}
+            {isBulkMode ? (
+              <form onSubmit={handleBulkSubmit} className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 border-b border-theme-border pb-4 mb-2">
+                  <div className="flex items-center flex-1">
+                    <label className="text-theme-secondary w-32">&gt; Subject:</label>
+                    {subjects.length > 0 ? (
+                      <select
+                        value={subjectId}
+                        onChange={(e) => setSubjectId(e.target.value)}
+                        className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent"
+                      >
+                        {subjects.map(s => (
+                          <option key={s.id} value={s.id} className="bg-theme-bg text-theme-primary">{s.subject_name}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <span className="text-theme-accent text-sm">NO SUBJECTS AVAILABLE</span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center flex-1">
+                    <label className="text-theme-secondary w-32">&gt; Topic:</label>
+                    <input
+                      type="text"
+                      value={topic}
+                      onChange={(e) => setTopic(e.target.value)}
+                      className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent placeholder-theme-border"
+                      placeholder="[ e.g. Sorting Algorithms ]"
+                    />
+                  </div>
                 </div>
 
-                <div className="flex items-center flex-1">
-                  <label className="text-theme-secondary w-32">&gt; Topic:</label>
-                  <input
-                    type="text"
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent placeholder-theme-border"
-                    placeholder="[ e.g. Sorting Algorithms ]"
-                  />
+                <div className="flex flex-col gap-6">
+                  {bulkCards.map((card, idx) => (
+                    <div key={card.id} className="flex flex-col gap-2 relative border-l-2 border-theme-muted pl-4">
+                      <div className="absolute -left-[10px] top-0 bg-theme-bg text-theme-muted text-xs">[{String(idx+1).padStart(2, '0')}]</div>
+                      
+                      <div className="flex items-center gap-2">
+                        <label className="text-theme-secondary w-16">&gt; Title:</label>
+                        <input
+                          type="text"
+                          value={card.title}
+                          onChange={(e) => updateBulkCard(card.id, 'title', e.target.value)}
+                          className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent placeholder-theme-border"
+                          placeholder="[ e.g. Quick Sort Avg Case ]"
+                        />
+                        {bulkCards.length > 1 && (
+                          <button type="button" onClick={() => handleRemoveBulkRow(card.id)} className="text-theme-accent hover:text-white px-2 focus:outline-none font-bold">[X]</button>
+                        )}
+                      </div>
+                      <div className="flex flex-col md:flex-row gap-4">
+                        <div className="flex flex-col flex-1">
+                          <label className="text-theme-secondary text-xs mb-1">&gt; Front (Question):</label>
+                          <textarea
+                            value={card.front}
+                            onChange={(e) => updateBulkCard(card.id, 'front', e.target.value)}
+                            rows={2}
+                            className="bg-transparent border border-theme-border text-theme-primary p-2 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent resize-y text-sm"
+                            placeholder="[ Question text... ]"
+                          />
+                        </div>
+                        <div className="flex flex-col flex-1">
+                          <label className="text-theme-secondary text-xs mb-1">&gt; Back (Answer):</label>
+                          <textarea
+                            value={card.back}
+                            onChange={(e) => updateBulkCard(card.id, 'back', e.target.value)}
+                            rows={2}
+                            className="bg-transparent border border-theme-border text-theme-primary p-2 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent resize-y text-sm"
+                            placeholder="[ Answer text... ]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex items-center flex-1">
-                  <label className="text-theme-secondary w-32">&gt; Title:</label>
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent placeholder-theme-border"
-                    placeholder="[ e.g. Quick Sort Avg Case ]"
-                  />
+                <div className="flex justify-between items-center mt-4 border-t border-theme-border pt-4">
+                  <div onClick={handleAddBulkRow} className="cursor-pointer">
+                    <Button type="button" label="+ ADD_ROW" color="blue" />
+                  </div>
+                  <div>
+                    <Button type="submit" label="SUBMIT_ALL" color="red" />
+                  </div>
                 </div>
-              </div>
+              </form>
+            ) : (
+              <form onSubmit={handleAddFlashcard} className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex items-center flex-1">
+                    <label className="text-theme-secondary w-32">&gt; Subject:</label>
+                    {subjects.length > 0 ? (
+                      <select
+                        value={subjectId}
+                        onChange={(e) => setSubjectId(e.target.value)}
+                        className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent"
+                      >
+                        {subjects.map(s => (
+                          <option key={s.id} value={s.id} className="bg-theme-bg text-theme-primary">{s.subject_name}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <span className="text-theme-accent text-sm">NO SUBJECTS AVAILABLE</span>
+                    )}
+                  </div>
 
-              <div className="flex flex-col md:flex-row gap-4 mt-2">
-                <div className="flex flex-col flex-1">
-                  <label className="text-theme-secondary mb-1">&gt; Front (Question):</label>
-                  <textarea
-                    value={front}
-                    onChange={(e) => setFront(e.target.value)}
-                    rows={3}
-                    className="bg-transparent border border-theme-border text-theme-primary p-2 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent resize-y"
-                    placeholder="[ Question text... ]"
-                  />
+                  <div className="flex items-center flex-1">
+                    <label className="text-theme-secondary w-32">&gt; Topic:</label>
+                    <input
+                      type="text"
+                      value={topic}
+                      onChange={(e) => setTopic(e.target.value)}
+                      className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent placeholder-theme-border"
+                      placeholder="[ e.g. Sorting Algorithms ]"
+                    />
+                  </div>
                 </div>
-                <div className="flex flex-col flex-1">
-                  <label className="text-theme-secondary mb-1">&gt; Back (Answer):</label>
-                  <textarea
-                    value={back}
-                    onChange={(e) => setBack(e.target.value)}
-                    rows={3}
-                    className="bg-transparent border border-theme-border text-theme-primary p-2 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent resize-y"
-                    placeholder="[ Answer text... ]"
-                  />
-                </div>
-              </div>
 
-              <div className="flex justify-end mt-2">
-                <Button label="SUBMIT" color="red" />
-              </div>
-            </form>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex items-center flex-1">
+                    <label className="text-theme-secondary w-32">&gt; Title:</label>
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="bg-transparent border border-theme-border text-theme-primary p-1 flex-1 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent placeholder-theme-border"
+                      placeholder="[ e.g. Quick Sort Avg Case ]"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-4 mt-2">
+                  <div className="flex flex-col flex-1">
+                    <label className="text-theme-secondary mb-1">&gt; Front (Question):</label>
+                    <textarea
+                      value={front}
+                      onChange={(e) => setFront(e.target.value)}
+                      rows={3}
+                      className="bg-transparent border border-theme-border text-theme-primary p-2 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent resize-y"
+                      placeholder="[ Question text... ]"
+                    />
+                  </div>
+                  <div className="flex flex-col flex-1">
+                    <label className="text-theme-secondary mb-1">&gt; Back (Answer):</label>
+                    <textarea
+                      value={back}
+                      onChange={(e) => setBack(e.target.value)}
+                      rows={3}
+                      className="bg-transparent border border-theme-border text-theme-primary p-2 focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent resize-y"
+                      placeholder="[ Answer text... ]"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end mt-2">
+                  <div>
+                    <Button type="submit" label="SUBMIT" color="red" />
+                  </div>
+                </div>
+              </form>
+            )}
           </div>
 
           {/* FLASHCARDS DIRECTORY */}

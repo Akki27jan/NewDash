@@ -61,6 +61,72 @@ async def create_flashcard(
     response_data.subject_name = subject.subject_name
     return response_data
 
+@router.post("/bulk", response_model=List[FlashcardResponse], status_code=status.HTTP_201_CREATED)
+async def create_flashcards_bulk(
+    flashcards_in: List[FlashcardCreate],
+    db: AsyncSession = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user)
+):
+    if not flashcards_in:
+        return []
+
+    # Validate that the subject exists and belongs to the student (using the first card's subject)
+    subject_id = flashcards_in[0].subject_id
+    subject_result = await db.execute(select(Subject).where(Subject.id == subject_id))
+    subject = subject_result.scalars().first()
+    
+    if not subject:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Subject not found")
+        
+    if subject.student_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to add a flashcard to this subject")
+
+    # Ensure all flashcards belong to the same authorized subject
+    for f in flashcards_in:
+        if f.subject_id != subject_id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="All flashcards in a bulk upload must belong to the same subject")
+
+    # Generate IDs
+    result = await db.execute(select(Flashcard.id).where(Flashcard.id.like("FLC%")))
+    all_ids = result.scalars().all()
+    max_num = 0
+    for flc_id in all_ids:
+        if len(flc_id) > 3:
+            try:
+                num_part = int(flc_id[3:])
+                if num_part > max_num:
+                    max_num = num_part
+            except ValueError:
+                pass
+                
+    new_flashcards = []
+    next_num = max_num + 1
+    
+    for flashcard_in in flashcards_in:
+        new_id = f"FLC{next_num:02d}"
+        new_flashcard = Flashcard(
+            id=new_id,
+            title=flashcard_in.title,
+            subject_id=flashcard_in.subject_id,
+            topic=flashcard_in.topic,
+            front=flashcard_in.front,
+            back=flashcard_in.back
+        )
+        new_flashcards.append(new_flashcard)
+        next_num += 1
+
+    db.add_all(new_flashcards)
+    await db.commit()
+    
+    response_data = []
+    for fc in new_flashcards:
+        resp = FlashcardResponse.model_validate(fc)
+        resp.subject_name = subject.subject_name
+        response_data.append(resp)
+        
+    return response_data
+
+
 @router.get("", response_model=List[FlashcardResponse])
 async def read_flashcards(
     subject_id: Optional[str] = Query(None, description="Filter flashcards by subject ID"),
